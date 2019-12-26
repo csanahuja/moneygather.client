@@ -7,6 +7,15 @@
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
+    <style>
+        .text-bold{ font-weight: 600;}
+        .hide{ display: none;}
+
+        .player-icon{ 
+            height: 80px;
+            width: 80px;
+        }
+    </style>
 
 </head>
 
@@ -19,14 +28,57 @@
     </header>
 
     <main class="container py-4">
-        <p class="status"></p>
-        <p> Click the button to update your credits </p>
-        <p> Current credits: <span class="credits">0</span>€</p>
-        <button class="update-credit">UPDATE CREDIT</button>
-        <button class="clear-credit">CLEAR CREDIT</button>
-        <button class="add-player">ADD PLAYER</button>
-        <input class="text-message" type="text">
-        <button class="send-text">SEND MESSAGE</button>
+        <div class="alert-success p-2 rounded status hide"></div>
+
+        <div class="credits">
+            <p>Click the button to update your credits</p>
+            <p> Current credits: <span class="credits">0</span>€</p>
+            <button class="update-credit">UPDATE CREDIT</button>
+            <button class="clear-credit">CLEAR CREDIT</button>
+        </div>
+
+        <div class="chat">
+            <input class="text-message" type="text">
+            <button class="send-text">SEND MESSAGE</button>
+        </div>
+
+        <div class="add-player-wrapper py-3">
+            <h2> Add a player </h2>
+            <p> Select a name, colour and gender!</p>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-3">
+                    <div class="field">
+                        <label> Name </label>
+                        <input id="player-name" type="text" placeholder="Player">
+                    </div>
+                    <div class="field">
+                        <label> Colour </label>
+                        <input id="player-colour" value="#007bff" type="color">
+                    </div>
+                    <div class="field">
+                        <label> Gender </label>
+                        <select id="player-gender">
+                            <option value="Man">Man</option>
+                            <option value="Woman">Woman</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button class="add-player">ADD PLAYER</button>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-9">
+                    <div class="player-preview">
+                        <div id="player-name-preview">Player</div>
+                        <div id="player-appeareance" class="player-icon rounded-circle my-3 bg-primary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="players-list">
+            <h2> Player list </h2>
+            <div class="empty-players">No players...</div>
+        </div>
+
     </main>
 
     <footer class="bg-dark text-white py-5">
@@ -49,7 +101,14 @@
             };
 
             socket.onmessage = function(event) {
-                $('.status').text(event.data);
+                let data = event.data.split('|')
+                let action = data[0]
+
+                if(action == 'PLAYER_ADDED')
+                    addPlayer(data[1])
+
+                $('.status').text(action);
+                $('.status').removeClass('hide')
             };
 
             socket.onclose = function(event) {
@@ -73,15 +132,43 @@
             })
 
             $('.send-text').on('click', function(){
-                socket.send("MSG - " + $('.text-message').val());
+                socket.send("MESSAGE|" + $('.text-message').val());
             })
 
             $('.add-player').on('click', function(){
-                socket.send("ADD_PLAYER|"+ JSON.stringify({name:'hola', colour:'#00000'}))
+                let name = $('#player-name').val();
+                let colour = $('#player-colour').val();
+                let gender = $('#player-gender').val();
+                socket.send("ADD_PLAYER|"+ JSON.stringify({
+                    name: name,
+                    colour:colour,
+                    gender: gender,
+                }));
             })
 
-        });
+            $('#player-name').on('keyup', function(){
+                $('#player-name-preview').text($(this).val());
+            })
 
+            $('#player-colour').on('change', function(){
+                $('#player-appeareance').css('background-color', $(this).val());
+                $('#player-appeareance').removeClass('bg-primary')
+            })
+
+            function addPlayer(player_info){
+                let player = JSON.parse(player_info);
+
+                $('.empty-players').remove()
+                $('.players-list').append(`
+                    <div class="player">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-icon rounded-circle my-3" style="background-color: ${player.colour}"></div>
+                    </div>
+
+                `)
+            }
+
+        });
     </script>
 </body>
 </html>
