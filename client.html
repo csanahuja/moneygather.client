@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Monopoly Websockets</title>
+    <title>Monopoly Game!</title>
+
+    <link rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+
 </head>
 
 <body>
-    <h1>Monopoly Websockets</h1>
-    <p> Click the button to update your credits </p>
-    <p> Current credits: <span class="credits">0</span>€</p>
-    <button class="update-credit">UPDATE CREDIT</button>
-    <button class="clear-credit">CLEAR CREDIT</button>
+
+    <header class="bg-primary py-4">
+        <div class="container">
+            <h1>Welcome to Monopoly!</h1>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <p class="status"></p>
+        <p> Click the button to update your credits </p>
+        <p> Current credits: <span class="credits">0</span>€</p>
+        <button class="update-credit">UPDATE CREDIT</button>
+        <button class="clear-credit">CLEAR CREDIT</button>
+        <button class="add-player">ADD PLAYER</button>
+        <input class="text-message" type="text">
+        <button class="send-text">SEND MESSAGE</button>
+    </main>
+
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            On development
+        </div>
+    </footer>
 
     <script
         src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -18,14 +42,14 @@
     <script>
         $(function(){
 
-            let socket = new WebSocket("wss://207.180.254.152:9000");
+            let socket = new WebSocket("wss://api.niticras.com/ws");
 
             socket.onopen = function(e) {
                 console.log("[open] Connection established");
             };
 
             socket.onmessage = function(event) {
-                $('.credits').text(event.data);
+                $('.status').text(event.data);
             };
 
             socket.onclose = function(event) {
@@ -46,6 +70,14 @@
 
             $('.clear-credit').on('click', function(){
                 socket.send("CLEAR_CREDIT");
+            })
+
+            $('.send-text').on('click', function(){
+                socket.send("MSG - " + $('.text-message').val());
+            })
+
+            $('.add-player').on('click', function(){
+                socket.send("ADD_PLAYER|"+ JSON.stringify({name:'hola', colour:'#00000'}))
             })
 
         });
