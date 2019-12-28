@@ -5,6 +5,7 @@ INDEX
 2. Main
 3. Board
 4. Chat
+5. Animations
 
 *****************/
 
@@ -75,8 +76,8 @@ INDEX
 }
 
 
-/*------------------*/
-.player-icon{ 
-    height: 80px;
-    width: 80px;
+/* 5 Animations */
+.rotate-y {
+    animation:rotate-y 8s linear infinite;
 }
+@keyframes rotate-y { 100% { transform:rotateY(360deg); } }

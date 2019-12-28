@@ -8,6 +8,7 @@
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/07639c90bc.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/client.css">
 
 </head>
@@ -81,19 +82,54 @@
             </div>
 
             <!-- INFO -->
-            <div id="info" class="col-xs-12 col-md-3 bg-success p-3">
-                
+            <div id="info-game" class="col-xs-12 col-md-3 bg-success p-3">
+
+                <!-- PLAYER -->
+                <div id="player-selection" class="bg-white rounded d-flex">
+                    <div id="player-fields" class="d-flex flex-column p-3">
+                        <div class="field">
+                            <label> Name </label>
+                            <input id="player-name" type="text" placeholder="Player">
+                        </div>
+                        <div class="field">
+                            <label> Colour </label>
+                            <input id="player-colour" value="#007bff" type="color">
+                        </div>
+                        <div class="field">
+                            <label> Gender </label>
+                            <select id="player-gender">
+                                <option value="ghost">Unknown</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="controls flex-grow-1 d-flex align-items-end">
+                            <button id="update-player" class="btn btn-primary mt-2">
+                                Update Player <span class="fa fa-refresh ml-2"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="player-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center shadow">
+                        <div id="player-name-display" class="mb-3">Player</div>
+                        <div id="player" class="text-primary fa fa-10x fa-ghost rotate-y"></div>
+                    </div>
+                </div>
+
+                <!-- DICE -->
+                <div id="dice">
+                    <button disabled id="throw-dice" class="btn btn-primary">Throw Dice</button>
+                </div>
             </div>
 
             <!-- CHAT -->
             <div id="chat" class="col-xs-12 col-md-3 bg-dark p-3">
                 <div id="chat-header" class="bg-primary text-center py-2 rounded-top text-white">
-                    <h3> Chat with others!</h3>
+                    <h3> Chat with others! <span class="fa fa-comments"></span></h3>
                 </div>
                 <div id="chat-window" class="bg-white rounded-bottom mb-3 p-2"></div>
                 <div id="chat-input">
                     <div class="input-group">
-                        <textarea id="chat-message" type="text" class="form-control" placeholder="Message..."></textarea>
+                        <textarea autocomplete="no" id="chat-message" type="text" class="form-control" placeholder="Message..."></textarea>
                         <div class="input-group-append">
                             <input id="chat-submit" type="submit" class="btn btn-primary" value="Send">
                         </div>
