@@ -3,7 +3,8 @@ INDEX
 
 1. Utils
 2. Main
-3. Chat
+3. Board
+4. Chat
 
 *****************/
 
@@ -12,18 +13,56 @@ INDEX
     font-weight: 600;
 }
 
+.bg-black {
+    background-color: #000000;
+}
+
 .hide{ 
     display: none;
 }
 
-
-/* 2. Main */
-#board,
-#chat {
-    min-height: 80vh;
+.h-74 {
+    height: 74%;
+}
+.h-13 {
+    height: 13%;
 }
 
-/* 3 Chat */
+.w-74 {
+    width: 74%;
+}
+.w-13 {
+    width: 13%;
+}
+.w-8-3 {
+    width: 8.3%;
+}
+
+/* 2. Main */
+
+
+/* 3. Board */
+#board {
+    height: 95vh;
+    width: 95vh;
+    overflow: auto;
+}
+#inner-board{
+    height: 840px;
+}
+#inner-board::after {
+    content: '';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-size: contain;
+    background-image: url('/monopoly_map.jpg')
+}
+
+
+/* 4 Chat */
 #chat-window {
     height: 70vh;
     overflow-y: auto;

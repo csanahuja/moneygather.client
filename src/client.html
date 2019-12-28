@@ -14,19 +14,80 @@
 
 <body>
 
-    <header class="bg-info py-4">
+    <header id="header" class="bg-info py-2">
         <div class="container">
-            <h1 class="text-white">Welcome to Monopoly!</h1>
+            <h1 class="text-white m-0">Welcome to Monopoly!</h1>
         </div>
     </header>
 
-    <main class="container-fluid">
-        <div class="row">
-            <div id="board" class="col-xs-12 col-md-9 bg-secondary">
-                Board
+    <main id="main" class="container-fluid">
+        <div class="row bg-secondary">
+
+            <!-- BOARD -->
+            <div id="board" class="col-xs-12 col-md-6 bg-secondary p-3">
+                <div id="inner-board" class="position-relative m-auto">
+                    <div id="top-board" class="h-13 d-flex">
+                        <div class="h-100 w-13 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-13 bg-success"></div>
+                    </div>
+                    <div id="center-board" class="h-74 d-flex">
+                        <div id="left-board" class="h-100 w-13 d-flex flex-wrap">
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                        </div>
+                        <div id="inner-center-board" class="h-100 w-74 bg-danger"></div>
+                        <div id="right-board" class="h-100 w-13 d-flex flex-wrap">
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                            <div class="w-100 bg-success"></div>
+                            <div class="w-100 bg-warning"></div>
+                        </div>
+                    </div>
+                    <div id="bottom-board" class="h-13 d-flex">
+                        <div class="h-100 w-13 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-8-3 bg-success"></div>
+                        <div class="h-100 w-8-3 bg-warning"></div>
+                        <div class="h-100 w-13 bg-success"></div>
+                    </div>
+                </div>
             </div>
-            <div id="chat" class="col-xs-12 col-md-3 bg-dark">
-                <div id="chat-header" class="bg-primary text-center mt-3 py-2 rounded-top text-white">
+
+            <!-- INFO -->
+            <div id="info" class="col-xs-12 col-md-3 bg-success p-3">
+                
+            </div>
+
+            <!-- CHAT -->
+            <div id="chat" class="col-xs-12 col-md-3 bg-dark p-3">
+                <div id="chat-header" class="bg-primary text-center py-2 rounded-top text-white">
                     <h3> Chat with others!</h3>
                 </div>
                 <div id="chat-window" class="bg-white rounded-bottom mb-3 p-2"></div>
@@ -40,13 +101,14 @@
                 </div>
   
             </div>
+
         </div>
 
     </main>
 
-    <footer class="bg-dark text-white py-5">
+    <footer id="footer" class="bg-black text-white py-5">
         <div class="container">
-            On development
+            On development      
         </div>
     </footer>
 

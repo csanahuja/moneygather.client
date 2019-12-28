@@ -1,5 +1,17 @@
 $(function(){
 
+    /* Board construction */
+    resizeBoard();
+
+    // $(window).on('resize', resizeBoard);
+
+    function resizeBoard(){
+        let innerBoard = $("#inner-board");
+        let size = innerBoard.height()
+        innerBoard.css("height", size)
+        innerBoard.css("width", size);
+    }
+
     /* WebSocket */
     let socket = new WebSocket("wss://api.niticras.com/ws");
 

@@ -1,4 +1,14 @@
+    /* Board construction */
+    resizeBoard();
 
+    // $(window).on('resize', resizeBoard);
+
+    function resizeBoard(){
+        let innerBoard = $("#inner-board");
+        let size = $(window).height() - $('#header').height() - 48;
+        innerBoard.css("height", size)
+        innerBoard.css("width", size);
+    }
 
         <div class="alert-success p-2 rounded status hide"></div>
 
