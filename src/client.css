@@ -1,0 +1,43 @@
+/*****************
+INDEX
+
+1. Utils
+2. Main
+3. Chat
+
+*****************/
+
+/* 1. Utils */
+.text-bold {
+    font-weight: 600;
+}
+
+.hide{ 
+    display: none;
+}
+
+
+/* 2. Main */
+#board,
+#chat {
+    min-height: 80vh;
+}
+
+/* 3 Chat */
+#chat-window {
+    height: 70vh;
+    overflow-y: auto;
+}
+
+#chat-window p {
+    margin-bottom: 0;
+    max-width: 100%;
+    word-break:break-all;
+}
+
+
+/*------------------*/
+.player-icon{ 
+    height: 80px;
+    width: 80px;
+}
