@@ -44,6 +44,9 @@ $(function(){
             case "PLAYER_INFO":
                 playerInfoAction(data);
                 break;
+            case "PLAYER_INFO":
+                playerInfoAction(data);
+                break;
             default:
                 console.warn(`Unknown action: ${data.action}`)
         }
@@ -57,7 +60,7 @@ $(function(){
             <strong style="color: ${data.colour}">${data.name}</strong>:
             ${textMessage}
         </p>`;
-        addChatMessage(message);
+        addGameEventMessage(message);
     }
 
     function playerConnectedAction(data){
@@ -66,7 +69,7 @@ $(function(){
             <span class="fa fa-${data.gender} mr-2" style="color: ${data.colour}"></span>
             <strong style="color: ${data.colour}">${data.name}</strong> connected
         </p>`;
-        addChatMessage(message);
+        addGameEventMessage(message);
     }
 
     function playerDisconnectedAction(data){
@@ -75,7 +78,7 @@ $(function(){
             <span class="fa fa-${data.gender} mr-2" style="color: ${data.colour}"></span>
             <strong style="color: ${data.colour}">${data.name}</strong> disconnected
         </p>`;
-        addChatMessage(message);
+        addGameEventMessage(message);
     }
 
     function playerUpdatedAction(data){
@@ -87,7 +90,7 @@ $(function(){
             <span class="fa fa-${data.current.gender} mx-2" style="color: ${data.current.colour}"></span>
             <strong style="color: ${data.current.colour}">${data.current.name}</strong>
         </p>`;
-        addChatMessage(message);
+        addGameEventMessage(message);
     }
 
     function playerInfoAction(data){
@@ -98,6 +101,12 @@ $(function(){
         let chatWindow = $("#chat-window");
         chatWindow.append(message);
         chatWindow.scrollTop(chatWindow.prop("scrollHeight"));
+    }
+
+    function addGameEventMessage(message){
+        let gameEventsWindow = $("#game-events-window");
+        gameEventsWindow.append(message);
+        gameEventsWindow.scrollTop(gameEventsWindow.prop("scrollHeight"));
     }
 
     /* Event Handlers */
@@ -132,8 +141,7 @@ $(function(){
 
         if (name.length > 0)
             player_name.text(name);
-        
-        player.removeClass('text-primary');
+
         player.removeClass(function (index, className) {
             return (className.match (/\bfa-\S+/g) || []).join(' ');
         });
@@ -156,6 +164,61 @@ $(function(){
             "gender": gender,
         }
         socket.send(JSON.stringify(socketMessage));
+    }
+
+    $('#throw-dices').on("click", throwDices)
+
+    function throwDices(){
+        $(this).attr("disabled", true);
+        let dice_1 = $('#dice-1');
+        let dice_2 = $('#dice-2');
+
+        let interval_dice_1 = setInterval(changeDice.bind(null, dice_1), 200);
+        let interval_dice_2 = setInterval(changeDice.bind(null, dice_2), 200);
+
+    }
+
+    function changeDice(dice){
+
+        let current_dice = dice.data('dice');
+        console.log(current_dice);
+
+        switch (current_dice) {
+            case "one":
+                dice.data('dice', 'two')
+                dice.removeClass('fa-dice-one')
+                dice.addClass('fa-dice-two')
+                break;
+            case "two":
+                dice.data('dice', 'three')
+                dice.removeClass('fa-dice-two')
+                dice.addClass('fa-dice-three')
+                break;
+            case "three":
+                dice.data('dice', 'four')
+                dice.removeClass('fa-dice-three')
+                dice.addClass('fa-dice-four')
+                break;
+            case "four":
+                dice.data('dice', 'five')
+                dice.removeClass('fa-dice-four')
+                dice.addClass('fa-dice-five')
+                break;
+            case "five":
+                dice.data('dice', 'six')
+                dice.removeClass('fa-dice-five')
+                dice.addClass('fa-dice-six')
+                break;
+            case "six":
+                dice.data('dice', 'one')
+                dice.removeClass('fa-dice-six')
+                dice.addClass('fa-dice-one')
+                break;
+            default:
+                dice.data('dice', 'one')
+                dice.removeClass('fa-dice')
+                dice.addClass('fa-dice-one')
+        }
     }
 
 });
