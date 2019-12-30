@@ -39,8 +39,14 @@ INDEX
     width: 8.3%;
 }
 
-.rotate-180 {
+.rotate-90 {
+    transform: rotate(90deg);
+}
+.rotate-180{
     transform: rotate(180deg);
+}
+.rotate-270 {
+    transform: rotate(270deg);
 }
 
 /* 2. Main */
@@ -51,6 +57,9 @@ INDEX
     height: 95vh;
     width: 95vh;
     overflow: auto;
+}
+#inner-center-board{
+    z-index: 1;
 }
 #inner-board{
     height: 840px;
@@ -63,7 +72,7 @@ INDEX
     right: 0;
     position: absolute;
     background-size: contain;
-    background-image: url('/monopoly_map.jpg')
+    background-image: url('/images/monopoly_map_transparent_center.png')
 }
 
 

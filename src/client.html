@@ -8,7 +8,6 @@
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/07639c90bc.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/client.css">
 
 </head>
@@ -26,6 +25,7 @@
 
             <!-- BOARD -->
             <div id="board" class="col-xs-12 col-md-6 bg-secondary p-3">
+
                 <div id="inner-board" class="position-relative m-auto">
                     <div id="top-board" class="h-13 d-flex">
                         <div id="box-10" class="h-100 w-13 bg-success box" title="10" data-position="10"></div>
@@ -52,7 +52,17 @@
                             <div id="box-2" class="w-100 bg-success box" title="2" data-position="2"></div>
                             <div id="box-1" class="w-100 bg-warning box" title="1" data-position="1"></div>
                         </div>
-                        <div id="inner-center-board" class="h-100 w-74 bg-danger"></div>
+                        <div id="inner-center-board" class="h-100 w-74 position-relative d-flex flex-column">
+                            <div class="mx-y text-right">
+                                <button id="rotate-board" class="btn btn-primary mr-5 my-3">
+                                    Rotate Board <span class="fa fa-arrow-alt-circle-right"></span>
+                                </button>
+                            </div>
+
+                            <div class="bg-white rounded flex-grow-1 d-flex flex-wrap mb-3 mb-5 mx-5 p-5">
+                                Game not started. Game will start when 4 players get ready
+                            </div>
+                        </div>
                         <div id="right-board" class="h-100 w-13 d-flex flex-wrap">
                             <div id="box-21" class="w-100 bg-warning box" title="21" data-position="21"></div>
                             <div id="box-22" class="w-100 bg-success box" title="22" data-position="22"></div>
@@ -81,7 +91,7 @@
                 </div>
             </div>
 
-            <!-- INFO -->
+            <!-- CONTROLS -->
             <div id="game-controls" class="col-xs-12 col-md-3 bg-success p-3">
 
                 <!-- PLAYER -->
@@ -103,10 +113,16 @@
                                 <option value="female">Female</option>
                             </select>
                         </div>
-                        <div class="controls flex-grow-1 d-flex align-items-end">
+                        <div class="controls flex-grow-1 d-flex flex-column">
                             <button id="update-player" class="btn btn-primary mt-2">
                                 Update Player <span class="fa fa-refresh ml-2"></span>
                             </button>
+                            <button id="player-not-ready" class="btn btn-danger mt-2">
+                                Not ready <span class="fa fa-times ml-2"></span>
+                            </button>                             
+                            <button id="player-ready" class="btn btn-success hide mt-2">
+                                Ready <span class="fa fa-check ml-2"></span>
+                            </button>                            
                         </div>
                     </div>
                     <div id="player-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center shadow">
@@ -127,7 +143,7 @@
                 </div>
             </div>
 
-            <!-- CHAT -->
+            <!-- GAME EVENTS & CHAT -->
             <div id="game-events-and-chat" class="col-xs-12 col-md-3 bg-dark p-3 d-flex flex-column">
 
                 <div id="game-events" class="bg-primary text-center py-2 rounded-top text-white">
@@ -151,7 +167,6 @@
             </div>
 
         </div>
-
     </main>
 
     <footer id="footer" class="bg-black text-white py-5">
@@ -160,13 +175,61 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" 
+    <aside>
+        <div class="modal fade" id="modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            No Connection
+                            <span class="fa fa-plug"></span>
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>There is no connection with the server. May be because one of these conditions</p>
+                        <ul>
+                            <li>
+                                <span class="fa fa-server"></span>
+                                <strong>Server offline</strong>
+                                <span>: The server is down</li>
+                            <li>
+                                <span class="fa fa-network-wired"></span>
+                                <strong>No internet</strong>
+                                <span>: You internet is down</span>
+                            </li>
+                        </ul>
+                        <p> Verify your internet connection is working, if so check server status and if it is online reload the webpage.</p>
+                        <button id="check-server-status" type="button" class="btn btn-primary">
+                            Check server status <span class="fa fa-database ml-2"></span>
+                        </button>
+                        <p id="server-status" class="mt-3"></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="reload-webpage" type="button" class="btn btn-primary">
+                            Reload <span class="fa fa-refresh ml-2"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <script
+        src="https://kit.fontawesome.com/07639c90bc.js"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="/client.js"></script>
