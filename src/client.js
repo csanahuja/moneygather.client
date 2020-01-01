@@ -3,6 +3,7 @@ $(function(){
     /* Global vars */
     let interval_dice_1 = null;
     let interval_dice_2 = null;
+    let UID = null;
 
     /* Board construction */
     resizeBoard();
@@ -43,6 +44,9 @@ $(function(){
                 break;
             case "PLAYER_INFO":
                 playerInfoAction(data);
+                break;
+            case "PLAYER_LIST":
+                playerListAction(data);
                 break;
             case "DICES_RESULT":
                 dicesResultAction(data);
@@ -100,6 +104,7 @@ $(function(){
     }
 
     function playerInfoAction(data){
+        UID = data.uid;
         updatePlayerPreview(data.name, data.colour, data.gender)
     }
 
@@ -137,6 +142,35 @@ $(function(){
         });
         dice.data('dice', number)
         dice.addClass('fa-dice-' + number);
+    }
+
+    function playerListAction(data){
+        let player_ul = $('#player-list');
+        let player_list = data.player_list;
+        let player_dummy = $('.player-dummy');
+        let players_num = $('#players-num');
+        players_num.text(player_list.length);
+        player_dummy.removeClass('player-dummy hide');
+
+        let player_li = null;
+        let player_icon = null;
+
+        for (player of player_list){
+            player_li = player_dummy.clone();
+            player_li.removeClass('player-dummy');
+            player_li.addClass('player');
+            player_li.data('uid', player.uid);
+            player_li.find('.player-name').text(player.name);
+            player_icon = player_li.find('.player-gender')
+            player_icon.removeClass('fa-ghost');
+            player_icon.addClass('fa-' + player.gender);
+            player_icon.css('color', player.colour);
+            if (player.uid === UID)
+                player_li.addClass('active-player');
+            player_ul.append(player_li);
+        }
+
+        player_dummy.addClass('player-dummy');
     }
 
     /* Event Handlers */
@@ -331,6 +365,51 @@ $(function(){
         }
         socket.send(JSON.stringify(socketMessage));
     }
+
+    $('#prev-player').on("click", prevPlayer);
+    $('#next-player').on("click", nextPlayer);
+
+    function prevPlayer(){
+        let active_player = $('.active-player');
+        let last_sibling = active_player.siblings().last();
+        let prev_sibling = null;
+
+        active_player.removeClass('active-player');
+        if (active_player.index() === 1)
+            prev_sibling = last_sibling;
+        else
+            prev_sibling = active_player.prev()
+        prev_sibling.addClass('active-player');
+    }
+
+    function nextPlayer(){
+        let active_player = $('.active-player');
+        let last_sibling = active_player.siblings().last();
+        let first_sibling = active_player.siblings().first();
+        let next_sibling = null;
+
+        active_player.removeClass('active-player');
+        if (active_player.index() > last_sibling.index())
+            next_sibling = first_sibling.next();
+        else
+            next_sibling = active_player.next()
+        console.log(next_sibling);
+        next_sibling.addClass('active-player');
+    }
+
+    /* Test */
+    $('#create-player').on("click", function(){
+        $('#box-0').html('<span id="player-user" class="bg-white fa fa-4x fa-user p-2 rounded text-danger"></span>')
+    });
+
+    $('#move-player').on("click", function(){
+        let position = 0;
+        let user = $('#player-user');
+        let movement = setInterval(function(){
+            position += 1;
+            $('#box-' + position).append(user);
+        }, 1000);
+    });
 
 });
 

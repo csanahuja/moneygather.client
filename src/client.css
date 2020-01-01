@@ -4,12 +4,16 @@ INDEX
 1. Utils
 2. Main
 3. Board
-4. Game Events & Chat
-5. Animations
+4. Game Status & Controls
+5. Game Events & Chat
+6. Animations
 
 *****************/
 
-/* 1. Utils */
+/*****************
+ 1. Utils 
+******************/
+
 .text-bold {
     font-weight: 600;
 }
@@ -49,15 +53,21 @@ INDEX
     transform: rotate(270deg);
 }
 
-/* 2. Main */
+/*****************
+ 2. Main 
+******************/
 
 
-/* 3. Board */
+/*****************
+ 3. Board 
+******************/
+
 #board {
     height: 95vh;
     width: 95vh;
     overflow: auto;
 }
+
 #inner-center-board{
     z-index: 1;
 }
@@ -75,8 +85,44 @@ INDEX
     background-image: url('/images/monopoly_map_transparent_center.png')
 }
 
+#inner-board .box {
+    z-index: 1;
+}
 
-/* 4 Game Events & Chat */
+
+/*****************
+4. Game Status & Controls
+******************/
+
+#player-list .player {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+#player-list .active-player {
+    z-index: 1 !important;
+}
+
+#player-slider #prev-player,
+#player-slider #next-player{
+    top: 50%;
+    z-index: 2;
+}
+
+#player-slider #prev-player{
+    left: 10%;
+}
+
+#player-slider #next-player{
+    right: 10%;
+}
+
+/*****************
+5. Game Events & Chats
+******************/
+
 #game-events-window,
 #chat-window {
     max-height: 35vh;
@@ -91,7 +137,10 @@ INDEX
 }
 
 
-/* 5 Animations */
+/*****************
+5. Animations
+******************/
+
 .rotate-y {
     animation:rotate-y 8s linear infinite;
 }
