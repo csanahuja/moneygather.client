@@ -1,7 +1,9 @@
 {
   "name": "monopoly.client",
-  "version": "1.0.0",
-  "devDependencies": {
-    "standard": "*"
+  "description": "Frontend package for monopoly game",
+  "eslintConfig": {
+    "rules": {
+      "indent": ["error", 4]
+    }
   }
 }

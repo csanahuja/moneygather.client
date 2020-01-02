@@ -400,7 +400,7 @@ $(function(){
     /* Test */
     $('#create-player').on("click", function(){
         $('#box-0').html('<span id="player-user" class="bg-white fa fa-4x fa-user p-2 rounded text-danger"></span>')
-    });
+    })
 
     $('#move-player').on("click", function(){
         let position = 0;
@@ -409,7 +409,5 @@ $(function(){
             position += 1;
             $('#box-' + position).append(user);
         }, 1000);
-    });
-
-});
-
+    })
+})
