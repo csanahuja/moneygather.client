@@ -1,0 +1,7 @@
+{
+  "name": "monopoly.client",
+  "version": "1.0.0",
+  "devDependencies": {
+    "standard": "*"
+  }
+}
