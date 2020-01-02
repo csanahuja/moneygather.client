@@ -1,4 +1,7 @@
-$(function(){
+/*!
+  * Monopoly.client v1.0
+  */
+(function($) {
 
     /* Global vars */
     let interval_dice_1 = null;
@@ -403,11 +406,11 @@ $(function(){
     })
 
     $('#move-player').on("click", function(){
-        let position = 0;
-        let user = $('#player-user');
+        let position = 0
+        let user = $('#player-user')
         let movement = setInterval(function(){
-            position += 1;
-            $('#box-' + position).append(user);
-        }, 1000);
+            position += 1
+            $('#box-' + position).append(user)
+        }, 1000)
     })
-})
+})(jQuery)
