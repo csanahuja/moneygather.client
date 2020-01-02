@@ -1,6 +1,9 @@
 {
   "name": "monopoly.client",
   "description": "Frontend package for monopoly game",
+  "standardx": {
+    "globals": ["jQuery", "WebSocket", "location"]
+  },
   "eslintConfig": {
     "rules": {
       "indent": ["error", 4]

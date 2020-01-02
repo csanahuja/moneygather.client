@@ -3,8 +3,8 @@
   */
 (function ($) {
     /* Global vars */
-    let interval_dice_1 = null
-    let interval_dice_2 = null
+    let intervalDice1 = null
+    let intervalDice2 = null
     let UID = null
 
     /* Board construction */
@@ -123,15 +123,15 @@
     }
 
     function dicesResultAction (data) {
-        const dice_1 = $('#dice-1')
-        const dice_2 = $('#dice-2')
+        const dice1 = $('#dice-1')
+        const dice2 = $('#dice-2')
 
         setTimeout(function () {
-            clearInterval(interval_dice_1)
-            clearInterval(interval_dice_2)
+            clearInterval(intervalDice1)
+            clearInterval(intervalDice2)
 
-            setDiceNumber(dice_1, data.dice1)
-            setDiceNumber(dice_2, data.dice2)
+            setDiceNumber(dice1, data.dice1)
+            setDiceNumber(dice2, data.dice2)
 
             $('#throw-dices').prop('disabled', false)
         }, 1000)
@@ -146,31 +146,31 @@
     }
 
     function playerListAction (data) {
-        const player_ul = $('#player-list')
-        const player_list = data.player_list
-        const player_dummy = $('.player-dummy')
-        const players_num = $('#players-num')
-        players_num.text(player_list.length)
-        player_dummy.removeClass('player-dummy hide')
+        const playerListElem = $('#player-list')
+        const playerList = data.player_list
+        const playerDummy = $('.player-dummy')
+        const playersNum = $('#players-num')
+        playersNum.text(playerList.length)
+        playerDummy.removeClass('player-dummy hide')
 
-        let player_li = null
-        let player_icon = null
+        let playerElem = null
+        let playerIconElem = null
 
-        for (player of player_list) {
-            player_li = player_dummy.clone()
-            player_li.removeClass('player-dummy')
-            player_li.addClass('player')
-            player_li.data('uid', player.uid)
-            player_li.find('.player-name').text(player.name)
-            player_icon = player_li.find('.player-gender')
-            player_icon.removeClass('fa-ghost')
-            player_icon.addClass('fa-' + player.gender)
-            player_icon.css('color', player.colour)
-            if (player.uid === UID) { player_li.addClass('active-player') }
-            player_ul.append(player_li)
-        }
+        playerList.forEach(player => {
+            playerElem = playerDummy.clone()
+            playerElem.removeClass('player-dummy')
+            playerElem.addClass('player')
+            playerElem.data('uid', player.uid)
+            playerElem.find('.player-name').text(player.name)
+            playerIconElem = playerElem.find('.player-gender')
+            playerIconElem.removeClass('fa-ghost')
+            playerIconElem.addClass('fa-' + player.gender)
+            playerIconElem.css('color', player.colour)
+            if (player.uid === UID) playerElem.addClass('active-player')
+            playerListElem.append(playerElem)
+        })
 
-        player_dummy.addClass('player-dummy')
+        playerDummy.addClass('player-dummy')
     }
 
     /* Event Handlers */
@@ -194,7 +194,7 @@
 
     $('#chat-submit').on('click', sendChatMessage)
     $('#chat-message').on('keypress', function (event) {
-        if (event.which == 13 && !event.shiftKey) {
+        if (event.which === 13 && !event.shiftKey) {
             event.preventDefault()
             sendChatMessage()
         }
@@ -218,9 +218,9 @@
 
     function updatePlayerPreview (name, colour, gender) {
         const player = $('#player')
-        const player_name = $('#player-name-display')
+        const playerName = $('#player-name-display')
 
-        if (name.length > 0) { player_name.text(name) }
+        if (name.length > 0) { playerName.text(name) }
 
         player.removeClass(function (index, className) {
             return (className.match(/\bfa-\S+/g) || []).join(' ')
@@ -250,11 +250,11 @@
 
     function throwDices () {
         $(this).attr('disabled', true)
-        const dice_1 = $('#dice-1')
-        const dice_2 = $('#dice-2')
+        const dice1 = $('#dice-1')
+        const dice2 = $('#dice-2')
 
-        interval_dice_1 = setInterval(changeDice.bind(null, dice_1), 50)
-        interval_dice_2 = setInterval(changeDice.bind(null, dice_2), 50)
+        intervalDice1 = setInterval(changeDice.bind(null, dice1), 50)
+        intervalDice2 = setInterval(changeDice.bind(null, dice2), 50)
 
         const socketMessage = {
             action: 'THROW_DICES'
@@ -263,8 +263,8 @@
     }
 
     function changeDice (dice) {
-        const current_dice = dice.data('dice')
-        switch (current_dice) {
+        const currentDice = dice.data('dice')
+        switch (currentDice) {
         case 'one':
             dice.data('dice', 'two')
             dice.removeClass('fa-dice-one')
@@ -368,25 +368,32 @@
     $('#next-player').on('click', nextPlayer)
 
     function prevPlayer () {
-        const active_player = $('.active-player')
-        const last_sibling = active_player.siblings().last()
-        let prev_sibling = null
+        const activePlayer = $('.active-player')
+        const lastSibling = activePlayer.siblings().last()
+        let prevSibling = null
 
-        active_player.removeClass('active-player')
-        if (active_player.index() === 1) { prev_sibling = last_sibling } else { prev_sibling = active_player.prev() }
-        prev_sibling.addClass('active-player')
+        activePlayer.removeClass('active-player')
+        if (activePlayer.index() === 1) {
+            prevSibling = lastSibling
+        } else {
+            prevSibling = activePlayer.prev()
+        }
+        prevSibling.addClass('active-player')
     }
 
     function nextPlayer () {
-        const active_player = $('.active-player')
-        const last_sibling = active_player.siblings().last()
-        const first_sibling = active_player.siblings().first()
-        let next_sibling = null
+        const activePlayer = $('.active-player')
+        const lastSibling = activePlayer.siblings().last()
+        const firstSibling = activePlayer.siblings().first()
+        let nextSibling = null
 
-        active_player.removeClass('active-player')
-        if (active_player.index() > last_sibling.index()) { next_sibling = first_sibling.next() } else { next_sibling = active_player.next() }
-        console.log(next_sibling)
-        next_sibling.addClass('active-player')
+        activePlayer.removeClass('active-player')
+        if (activePlayer.index() > lastSibling.index()) {
+            nextSibling = firstSibling.next()
+        } else {
+            nextSibling = activePlayer.next()
+        }
+        nextSibling.addClass('active-player')
     }
 
     /* Test */
@@ -397,7 +404,7 @@
     $('#move-player').on('click', function () {
         let position = 0
         const user = $('#player-user')
-        const movement = setInterval(function () {
+        setInterval(function () {
             position += 1
             $('#box-' + position).append(user)
         }, 1000)
