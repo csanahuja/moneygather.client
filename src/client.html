@@ -94,7 +94,7 @@
             </div>
 
             <!-- STATUS AND CONTROLS -->
-            <div id="game-status-and-controls" class="col-md-12 col-lg-3 bg-success">
+            <div id="game-status-and-controls" class="col-sm-12 col-md-6 col-lg-3 bg-success">
 
                 <!-- GAME STATUS -->
                 <div id="game-status" class="bg-white rounded d-flex flex-column my-3">
@@ -105,7 +105,7 @@
                         <h4 class="text-primary"> Players (<span id="players-num">0</span>)</h4>
                         <div id="player-slider" class="position-relative">
                             <ul id="player-list" class="list-unstyled mb-0">
-                                <li class="player-dummy hide">
+                                <li class="player-dummy">
                                     <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center">
                                         <div class="player-name mb-3">Player list</div>
                                         <div class="player-gender fa fa-10x fa-ghost"></div>
@@ -181,7 +181,7 @@
             </div>
 
             <!-- GAME EVENTS & CHAT -->
-            <div id="game-events-and-chat" class="col-md-12 col-lg-3 bg-dark p-3 d-flex flex-column">
+            <div id="game-events-and-chat" class="col-sm-12 col-md-6 col-lg-3 bg-dark p-3 d-flex flex-column">
 
                 <div id="game-events" class="bg-primary text-center py-2 rounded-top text-white">
                     <h3> Game events <span class="fa fa-gamepad"></span></h3>
@@ -215,39 +215,9 @@
         <div class="modal fade" id="modal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h4 class="modal-title">
-                            No Connection
-                            <span class="fa fa-plug"></span>
-                        </h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <p>There is no connection with the server. May be because one of these conditions</p>
-                        <ul>
-                            <li>
-                                <span class="fa fa-server"></span>
-                                <strong>Server offline</strong>
-                                <span>: The server is down</li>
-                            <li>
-                                <span class="fa fa-network-wired"></span>
-                                <strong>No internet</strong>
-                                <span>: You internet is down</span>
-                            </li>
-                        </ul>
-                        <p> Verify your internet connection is working, if so check server status and if it is online reload the webpage.</p>
-                        <button id="check-server-status" type="button" class="btn btn-primary">
-                            Check server status <span class="fa fa-database ml-2"></span>
-                        </button>
-                        <p id="server-status" class="mt-3"></p>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button id="reload-webpage" type="button" class="btn btn-primary">
-                            Reload <span class="fa fa-refresh ml-2"></span>
-                        </button>
-                    </div>
+                    <div class="modal-header"></div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer"></div>
                 </div>
             </div>
         </div>

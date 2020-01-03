@@ -2,12 +2,11 @@
   * Monopoly.client v1.0
   */
 (function ($) {
-    /* Global vars */
+    const socket = new WebSocket('wss://api.niticras.com/ws')
     let intervalDice1 = null
     let intervalDice2 = null
     let UID = null
 
-    /* Board construction */
     resizeBoard()
 
     function resizeBoard () {
@@ -17,11 +16,92 @@
         innerBoard.css('width', size)
     }
 
-    /* WebSocket */
-    const socket = new WebSocket('wss://api.niticras.com/ws')
+    function createDisconnectedModal () {
+        const modalHeader = `
+            <h4 class="modal-title">
+                No Connection <span class="fa fa-plug"></span>
+            </h4>
+        `
+        const modalBody = `
+            <p>
+                There is no connection with the server. May be because one 
+                of these conditions
+            </p>
+            <ul>
+                <li>
+                    <span class="fa fa-server"></span>
+                    <strong>Server offline</strong>
+                    <span>: The server is down</li>
+                <li>
+                    <span class="fa fa-network-wired"></span>
+                    <strong>No internet</strong>
+                    <span>: You internet is down</span>
+                </li>
+            </ul>
+            <p>
+                Verify your internet connection is working, if so check 
+                server status and if it is online reload the webpage.
+            </p>
+            <button id="check-server-status" type="button" class="btn btn-primary">
+                Check server status <span class="fa fa-database ml-2"></span>
+            </button>
+            <p id="server-status" class="mt-3"></p>
+        `
+        const modalFooter = `
+            <button id="reload-webpage" type="button" class="btn btn-primary">
+                Reload <span class="fa fa-refresh ml-2"></span>
+            </button>
+        `
+        createModal(modalHeader, modalBody, modalFooter)
+    }
+
+    function createGameAlreadyStartedModal () {
+        const modalHeader = `
+            <h4 class="modal-title">
+                Game already started <span class="fa fa-sad-cry"></span>
+            </h4>
+        `
+        const modalBody = `
+            <p>
+                The game has already started. You must wait untill the game
+                ends.
+            </p>
+        `
+        createModal(modalHeader, modalBody, null)
+    }
+
+    function createMaxPlayersReachedModal () {
+        const modalHeader = `
+            <h4 class="modal-title">
+                Game is full <span class="fa fa-sad-cry"></span>
+            </h4>
+        `
+        const modalBody = `
+            <p>
+                The game has already reached max players.
+            </p>
+        `
+        createModal(modalHeader, modalBody, null)
+    }
+
+    function createModal (header, body, footer) {
+        $('.modal-header').html(header)
+        $('.modal-body').html(body)
+        $('.modal-footer').html(footer)
+    }
 
     socket.onclose = function (event) {
-        console.log(event)
+        const code = event.code
+        switch (code) {
+        case 3000:
+            createGameAlreadyStartedModal()
+            break
+        case 3001:
+            createMaxPlayersReachedModal()
+            break
+        default:
+            createDisconnectedModal()
+        }
         $('#modal').modal({ backdrop: 'static', keyboard: false })
     }
 
@@ -150,8 +230,8 @@
         const playerList = data.player_list
         const playerDummy = $('.player-dummy')
         const playersNum = $('#players-num')
-        playersNum.text(playerList.length)
-        playerDummy.removeClass('player-dummy hide')
+        playersNum.text(playerList.length + '/' + data.num_players)
+        playerDummy.removeClass('player-dummy')
 
         let playerElem = null
         let playerIconElem = null
@@ -174,8 +254,8 @@
     }
 
     /* Event Handlers */
-    $('#check-server-status').on('click', checkServerStatus)
-    $('#reload-webpage').on('click', reloadWebpage)
+    $('body').on('click', '#check-server-status', checkServerStatus)
+    $('body').on('click', '#reload-webpage', reloadWebpage)
 
     function checkServerStatus () {
         const serverStatus = $('#server-status')
