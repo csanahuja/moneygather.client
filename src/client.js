@@ -54,12 +54,6 @@
         case 'GAME_EVENT':
             gameEventAction(data)
             break
-        case 'PLAYER_UPDATED':
-            playerUpdatedAction(data)
-            break
-        // case 'PLAYER_STATUS':
-        //     playerStatusAction(data)
-        //     break
         case 'PLAYER_INFO':
             playerInfoAction(data)
             break
@@ -152,18 +146,17 @@
         $('.modal-footer').html(footer)
     }
 
-
     /********************************************
      * Utils functions
      *******************************************/
 
-    function createPlayerIdentifierMessage(name, colour, gender) {
+    function createPlayerIdentifierMessage (name, colour, gender) {
         const playerIdentifier = `
             <span class="fa fa-${gender}" style="color: ${colour}"></span>
-            <strong style="color: ${colour}">${name}</strong> 
+            <strong style="color: ${colour}">${name}</strong>
         `
         return playerIdentifier
-     }
+    }
 
     /********************************************
      * Game Events functions
@@ -173,7 +166,7 @@
         const playerIdentifier = createPlayerIdentifierMessage(
             data.name,
             data.colour,
-            data.gender,
+            data.gender
         )
         const message = `<p>${playerIdentifier} connected</p>`
         addGameEventMessage(message)
@@ -183,7 +176,7 @@
         const playerIdentifier = createPlayerIdentifierMessage(
             data.name,
             data.colour,
-            data.gender,
+            data.gender
         )
         const message = `<p>${playerIdentifier} disconnected</p>`
         addGameEventMessage(message)
@@ -193,7 +186,7 @@
         const playerIdentifier = createPlayerIdentifierMessage(
             data.name,
             data.colour,
-            data.gender,
+            data.gender
         )
         const message = `<p>${playerIdentifier} is now ready</p>`
         addGameEventMessage(message)
@@ -203,9 +196,24 @@
         const playerIdentifier = createPlayerIdentifierMessage(
             data.name,
             data.colour,
-            data.gender,
+            data.gender
         )
         const message = `<p>${playerIdentifier} is not ready</p>`
+        addGameEventMessage(message)
+    }
+
+    function playerUpdatedMessage (data) {
+        const previousPlayerIdentifier = createPlayerIdentifierMessage(
+            data.previous_name,
+            data.previous_colour,
+            data.previous_gender
+        )
+        const playerIdentifier = createPlayerIdentifierMessage(
+            data.name,
+            data.colour,
+            data.gender
+        )
+        const message = `<p>${previousPlayerIdentifier} is now ${playerIdentifier}</p>`
         addGameEventMessage(message)
     }
 
@@ -229,7 +237,7 @@
         addChatMessage(message)
     }
 
-    function gameEventAction (data){
+    function gameEventAction (data) {
         const gameEvent = data.game_event
 
         switch (gameEvent) {
@@ -245,20 +253,12 @@
         case 'PLAYER_NOT_READY':
             playerNotReadyMessage(data.data)
             break
+        case 'PLAYER_UPDATED':
+            playerUpdatedMessage(data.data)
+            break
         default:
             console.warn(`Unknown game event: ${gameEvent}`)
         }
-    }
-
-    function playerUpdatedAction (data) {
-        const message = `<p>
-            <span class="fa fa-${data.previous.gender} mr-2" style="color: ${data.previous.colour}"></span>
-            <strong style="color: ${data.previous.colour}">${data.previous.name}</strong>
-            is now 
-            <span class="fa fa-${data.current.gender} mx-2" style="color: ${data.current.colour}"></span>
-            <strong style="color: ${data.current.colour}">${data.current.name}</strong>
-        </p>`
-        addGameEventMessage(message)
     }
 
     function playerInfoAction (data) {
