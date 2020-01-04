@@ -25,6 +25,56 @@
     }
 
     /********************************************
+     * Socket events
+     *******************************************/
+
+    socket.onclose = function (event) {
+        const code = event.code
+        switch (code) {
+        case 3000:
+            createGameAlreadyStartedModal()
+            break
+        case 3001:
+            createMaxPlayersReachedModal()
+            break
+        default:
+            createDisconnectedModal()
+        }
+        $('#modal').modal({ backdrop: 'static', keyboard: false })
+    }
+
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data)
+        const action = data.action
+
+        switch (action) {
+        case 'MESSAGE':
+            chatMessageAction(data)
+            break
+        case 'GAME_EVENT':
+            gameEventAction(data)
+            break
+        case 'PLAYER_UPDATED':
+            playerUpdatedAction(data)
+            break
+        // case 'PLAYER_STATUS':
+        //     playerStatusAction(data)
+        //     break
+        case 'PLAYER_INFO':
+            playerInfoAction(data)
+            break
+        case 'PLAYER_LIST':
+            playerListAction(data)
+            break
+        case 'DICES_RESULT':
+            dicesResultAction(data)
+            break
+        default:
+            console.warn(`Unknown action: ${action}`)
+        }
+    }
+
+    /********************************************
      * Modal functions
      *******************************************/
 
@@ -102,60 +152,71 @@
         $('.modal-footer').html(footer)
     }
 
+
     /********************************************
-     * Socket events
+     * Utils functions
      *******************************************/
 
-    socket.onclose = function (event) {
-        const code = event.code
-        switch (code) {
-        case 3000:
-            createGameAlreadyStartedModal()
-            break
-        case 3001:
-            createMaxPlayersReachedModal()
-            break
-        default:
-            createDisconnectedModal()
-        }
-        $('#modal').modal({ backdrop: 'static', keyboard: false })
+    function createPlayerIdentifierMessage(name, colour, gender) {
+        const playerIdentifier = `
+            <span class="fa fa-${gender}" style="color: ${colour}"></span>
+            <strong style="color: ${colour}">${name}</strong> 
+        `
+        return playerIdentifier
+     }
+
+    /********************************************
+     * Game Events functions
+     *******************************************/
+
+    function playerConnectedMessage (data) {
+        const playerIdentifier = createPlayerIdentifierMessage(
+            data.name,
+            data.colour,
+            data.gender,
+        )
+        const message = `<p>${playerIdentifier} connected</p>`
+        addGameEventMessage(message)
     }
 
-    socket.onmessage = function (event) {
-        const data = JSON.parse(event.data)
+    function playerDisconnectedMessage (data) {
+        const playerIdentifier = createPlayerIdentifierMessage(
+            data.name,
+            data.colour,
+            data.gender,
+        )
+        const message = `<p>${playerIdentifier} disconnected</p>`
+        addGameEventMessage(message)
+    }
 
-        switch (data.action) {
-        case 'MESSAGE':
-            chatMessageAction(data)
-            break
-        case 'PLAYER_CONNECTED':
-            playerConnectedAction(data)
-            break
-        case 'PLAYER_DISCONNECTED':
-            playerDisconnectedAction(data)
-            break
-        case 'PLAYER_UPDATED':
-            playerUpdatedAction(data)
-            break
-        case 'PLAYER_STATUS':
-            playerStatusAction(data)
-            break
-        case 'PLAYER_INFO':
-            playerInfoAction(data)
-            break
-        case 'PLAYER_LIST':
-            playerListAction(data)
-            break
-        case 'DICES_RESULT':
-            dicesResultAction(data)
-            break
-        default:
-            console.warn(`Unknown action: ${data.action}`)
-        }
+    function playerReadyMessage (data) {
+        const playerIdentifier = createPlayerIdentifierMessage(
+            data.name,
+            data.colour,
+            data.gender,
+        )
+        const message = `<p>${playerIdentifier} is now ready</p>`
+        addGameEventMessage(message)
+    }
+
+    function playerNotReadyMessage (data) {
+        const playerIdentifier = createPlayerIdentifierMessage(
+            data.name,
+            data.colour,
+            data.gender,
+        )
+        const message = `<p>${playerIdentifier} is not ready</p>`
+        addGameEventMessage(message)
+    }
+
+    function addGameEventMessage (message) {
+        const gameEventsWindow = $('#game-events-window')
+        gameEventsWindow.append(message)
+        gameEventsWindow.scrollTop(gameEventsWindow.prop('scrollHeight'))
     }
 
     /********************************************
-     * Socket Message Handlers
+     * Socket message handlers
      *******************************************/
 
     function chatMessageAction (data) {
@@ -168,20 +229,25 @@
         addChatMessage(message)
     }
 
-    function playerConnectedAction (data) {
-        const message = `<p>
-            <span class="fa fa-${data.gender} mr-2" style="color: ${data.colour}"></span>
-            <strong style="color: ${data.colour}">${data.name}</strong> connected
-        </p>`
-        addGameEventMessage(message)
-    }
+    function gameEventAction (data){
+        const gameEvent = data.game_event
 
-    function playerDisconnectedAction (data) {
-        const message = `<p>
-            <span class="fa fa-${data.gender} mr-2" style="color: ${data.colour}"></span>
-            <strong style="color: ${data.colour}">${data.name}</strong> disconnected
-        </p>`
-        addGameEventMessage(message)
+        switch (gameEvent) {
+        case 'PLAYER_CONNECTED':
+            playerConnectedMessage(data.data)
+            break
+        case 'PLAYER_DISCONNECTED':
+            playerDisconnectedMessage(data.data)
+            break
+        case 'PLAYER_READY':
+            playerReadyMessage(data.data)
+            break
+        case 'PLAYER_NOT_READY':
+            playerNotReadyMessage(data.data)
+            break
+        default:
+            console.warn(`Unknown game event: ${gameEvent}`)
+        }
     }
 
     function playerUpdatedAction (data) {
@@ -195,15 +261,6 @@
         addGameEventMessage(message)
     }
 
-    function playerStatusAction (data) {
-        const status = data.status === 'ready' ? 'is now ready' : 'is not ready'
-        const message = `<p>
-            <span class="fa fa-${data.gender} mr-2" style="color: ${data.colour}"></span>
-            <strong style="color: ${data.colour}">${data.name}</strong> ${status}
-        </p>`
-        addGameEventMessage(message)
-    }
-
     function playerInfoAction (data) {
         UID = data.uid
         updatePlayerPreview(data.name, data.colour, data.gender)
@@ -213,12 +270,6 @@
         const chatWindow = $('#chat-window')
         chatWindow.append(message)
         chatWindow.scrollTop(chatWindow.prop('scrollHeight'))
-    }
-
-    function addGameEventMessage (message) {
-        const gameEventsWindow = $('#game-events-window')
-        gameEventsWindow.append(message)
-        gameEventsWindow.scrollTop(gameEventsWindow.prop('scrollHeight'))
     }
 
     function dicesResultAction (data) {
