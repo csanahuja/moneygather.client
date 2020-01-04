@@ -2,6 +2,10 @@
   * moneygather.client v1.0
   */
 (function ($) {
+    /********************************************
+     * Globals vars and initialization
+     *******************************************/
+
     const socket = new WebSocket('wss://api.niticras.com/ws')
     let intervalDice1 = null
     let intervalDice2 = null
@@ -9,12 +13,20 @@
 
     resizeBoard()
 
+    /********************************************
+     * Resize functions
+     *******************************************/
+
     function resizeBoard () {
         const innerBoard = $('#inner-board')
         const size = innerBoard.height()
         innerBoard.css('height', size)
         innerBoard.css('width', size)
     }
+
+    /********************************************
+     * Modal functions
+     *******************************************/
 
     function createDisconnectedModal () {
         const modalHeader = `
@@ -90,6 +102,10 @@
         $('.modal-footer').html(footer)
     }
 
+    /********************************************
+     * Socket events
+     *******************************************/
+
     socket.onclose = function (event) {
         const code = event.code
         switch (code) {
@@ -138,7 +154,10 @@
         }
     }
 
-    /* Socket Message Handlers */
+    /********************************************
+     * Socket Message Handlers
+     *******************************************/
+
     function chatMessageAction (data) {
         const textMessage = data.message.replace(/(?:\n)/g, '<br>')
         const message = `<p>
@@ -253,9 +272,21 @@
         playerDummy.addClass('player-dummy')
     }
 
-    /* Event Handlers */
+    /********************************************
+     * Event handlers
+     *******************************************/
+
     $('body').on('click', '#check-server-status', checkServerStatus)
     $('body').on('click', '#reload-webpage', reloadWebpage)
+    $('#chat-submit').on('click', sendChatMessage)
+    $('#chat-message').on('keypress', checkSendChatMessage)
+    $('#update-player').on('click', updatePlayer)
+    $('#throw-dices').on('click', throwDices)
+    $('#rotate-board').on('click', rotateBoard)
+    $('#player-not-ready').on('click', setReady)
+    $('#player-ready').on('click', setNotReady)
+    $('#prev-player').on('click', prevPlayer)
+    $('#next-player').on('click', nextPlayer)
 
     function checkServerStatus () {
         const serverStatus = $('#server-status')
@@ -272,13 +303,12 @@
         location.reload()
     }
 
-    $('#chat-submit').on('click', sendChatMessage)
-    $('#chat-message').on('keypress', function (event) {
+    function checkSendChatMessage (event) {
         if (event.which === 13 && !event.shiftKey) {
             event.preventDefault()
             sendChatMessage()
         }
-    })
+    }
 
     function sendChatMessage () {
         const chatMessage = $('#chat-message')
@@ -293,8 +323,6 @@
         }
         socket.send(JSON.stringify(socketMessage))
     }
-
-    $('#update-player').on('click', updatePlayer)
 
     function updatePlayerPreview (name, colour, gender) {
         const player = $('#player')
@@ -325,8 +353,6 @@
         }
         socket.send(JSON.stringify(socketMessage))
     }
-
-    $('#throw-dices').on('click', throwDices)
 
     function throwDices () {
         $(this).attr('disabled', true)
@@ -382,8 +408,6 @@
         }
     }
 
-    $('#rotate-board').on('click', rotateBoard)
-
     function rotateBoard () {
         const innerBoard = $('#inner-board')
         const innerCenterBoard = $('#inner-center-board')
@@ -415,9 +439,6 @@
         }
     }
 
-    $('#player-not-ready').on('click', setReady)
-    $('#player-ready').on('click', setNotReady)
-
     function setReady () {
         $(this).addClass('hide')
         $('#player-ready').removeClass('hide')
@@ -443,9 +464,6 @@
         }
         socket.send(JSON.stringify(socketMessage))
     }
-
-    $('#prev-player').on('click', prevPlayer)
-    $('#next-player').on('click', nextPlayer)
 
     function prevPlayer () {
         const activePlayer = $('.active-player')
