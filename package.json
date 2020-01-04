@@ -1,6 +1,6 @@
 {
-  "name": "monopoly.client",
-  "description": "Frontend package for monopoly game",
+  "name": "moneygather.client",
+  "description": "Frontend package for moneygather game",
   "standardx": {
     "globals": ["jQuery", "WebSocket", "location"]
   },

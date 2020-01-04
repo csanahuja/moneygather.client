@@ -1,5 +1,5 @@
 /*!
-  * Monopoly.client v1.0
+  * moneygather.client v1.0
   */
 (function ($) {
     const socket = new WebSocket('wss://api.niticras.com/ws')
