@@ -3,6 +3,7 @@
 <head>
 
     <title>Moneygather Game!</title>
+    <meta name="description" content="Moneygather game, a monopoly look-alike." />
 
     <link rel="stylesheet" 
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -14,9 +15,9 @@
 
 <body>
 
-    <header id="header" class="bg-info py-2">
-        <div class="container-fluid">
-            <h1 class="text-white h3 m-0">Welcome to Moneygather!</h1>
+    <header id="header" class="bg-theme text-white py-2">
+        <div class="container text-center">
+            <h1 class="h3 mb-0">Welcome to Moneygather!</h1>
         </div>
     </header>
 
@@ -24,7 +25,7 @@
         <div class="row bg-secondary">
 
             <!-- BOARD -->
-            <div id="board" class="col-md-12 col-lg-6 bg-secondary p-3">
+            <div id="board" class="col-lg-12 col-xl-6 order-xl-1 bg-theme-2 p-3">
 
                 <div id="inner-board" class="position-relative m-auto">
                     <div id="top-board" class="h-13 d-flex">
@@ -94,7 +95,7 @@
             </div>
 
             <!-- STATUS AND CONTROLS -->
-            <div id="game-status-and-controls" class="col-sm-12 col-md-6 col-lg-3 bg-success">
+            <div id="game-status-and-controls" class="col-sm-12 col-lg-6 col-xl-3 order-lg-0 bg-success">
 
                 <!-- GAME STATUS -->
                 <div id="game-status" class="bg-white rounded d-flex flex-column my-3">
@@ -162,7 +163,7 @@
                 </div>
 
                 <!-- DICE -->
-                <div id="dices-throw" class="bg-white rounded d-flex flex-column mb-3 p-3">
+                <div id="dices-throw" class="bg-white rounded d-flex flex-column mb-3 p-3 hide">
                     <div id="dices-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-wrap justify-content-center shadow">
                         <div id="dice-1" class="flex-grow-1 text-primary fa fa-8x fa-dice"></div>
                         <div id="dice-2" class="flex-grow-1 text-primary fa fa-8x fa-dice rotate-180"></div>
@@ -171,11 +172,10 @@
                         Throw Dices <span class="fa fa-dice ml-2"></span>
                     </button>
                 </div>
-
             </div>
 
             <!-- GAME EVENTS & CHAT -->
-            <div id="game-events-and-chat" class="col-sm-12 col-md-6 col-lg-3 bg-dark p-3 d-flex flex-column">
+            <div id="game-events-and-chat" class="col-sm-12 col-lg-6 col-xl-3 order-lg-2 bg-dark p-3 d-flex flex-column">
 
                 <div id="game-events" class="bg-primary text-center py-2 rounded-top text-white">
                     <h3> Game events <span class="fa fa-gamepad"></span></h3>
@@ -198,9 +198,15 @@
         </div>
     </main>
 
+    <section id="info" class="bg-light py-5">
+        <div class="container">
+            Under construction... the website its still under heavy development
+        </div>
+    </section>
+
     <footer id="footer" class="bg-black text-white py-5">
         <div class="container">
-            On development      
+            © 2020 niticras.com
         </div>
     </footer>
 

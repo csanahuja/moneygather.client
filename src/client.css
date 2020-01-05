@@ -18,12 +18,8 @@ INDEX
     font-weight: 600;
 }
 
-.bg-black {
-    background-color: #000000;
-}
-
 .hide{ 
-    display: none;
+    display: none !important;
 }
 
 .h-74 {
@@ -53,18 +49,27 @@ INDEX
     transform: rotate(270deg);
 }
 
+.bg-black {
+    background-color: #000000 !important;
+}
+
+.bg-theme {
+    background-color: #03A9F4 !important;
+}
+
+.bg-theme-2 {
+    background-color: #009688 !important;
+}
+
 /*****************
  2. Main 
 ******************/
-
 
 /*****************
  3. Board 
 ******************/
 
 #board {
-    height: 95vh;
-    width: 95vh;
     overflow: auto;
 }
 
@@ -126,6 +131,7 @@ INDEX
 #game-events-window,
 #chat-window {
     max-height: 35vh;
+    min-height: 20rem;
     overflow-y: auto;
 }
 
@@ -138,7 +144,7 @@ INDEX
 
 
 /*****************
-5. Animations
+6. Animations
 ******************/
 
 .rotate-y {

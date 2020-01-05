@@ -63,6 +63,9 @@
         case 'DICES_RESULT':
             dicesResultAction(data)
             break
+        case 'GAME_STARTED':
+            gameStartedAction(data)
+            break
         default:
             console.warn(`Unknown action: ${action}`)
         }
@@ -237,6 +240,12 @@
         addChatMessage(message)
     }
 
+    function addChatMessage (message) {
+        const chatWindow = $('#chat-window')
+        chatWindow.append(message)
+        chatWindow.scrollTop(chatWindow.prop('scrollHeight'))
+    }
+
     function gameEventAction (data) {
         const gameEvent = data.game_event
 
@@ -264,12 +273,6 @@
     function playerInfoAction (data) {
         UID = data.uid
         updatePlayerPreview(data.name, data.colour, data.gender)
-    }
-
-    function addChatMessage (message) {
-        const chatWindow = $('#chat-window')
-        chatWindow.append(message)
-        chatWindow.scrollTop(chatWindow.prop('scrollHeight'))
     }
 
     function dicesResultAction (data) {
@@ -321,6 +324,16 @@
         })
 
         playerDummy.addClass('player-dummy')
+    }
+
+    function gameStartedAction (data) {
+        const gameStatusTitle = $('#game-status-title')
+        gameStatusTitle.removeClass('text-danger')
+        gameStatusTitle.addClass('text-success')
+        gameStatusTitle.text('Game started')
+
+        $('#dices-throw').removeClass('hide')
+        $('#player-selection').addClass('hide')
     }
 
     /********************************************
