@@ -7,9 +7,8 @@
      *******************************************/
 
     const socket = new WebSocket('wss://api.niticras.com/ws')
-    let intervalDice1 = null
-    let intervalDice2 = null
     let UID = null
+    let dicesTurnInterval = null
 
     resizeBoard()
 
@@ -60,11 +59,14 @@
         case 'PLAYER_LIST':
             playerListAction(data)
             break
-        case 'DICES_RESULT':
-            dicesResultAction(data)
-            break
         case 'GAME_STARTED':
             gameStartedAction(data)
+            break
+        case 'PLAYER_TURN':
+            playerTurnAction(data)
+            break
+        case 'DICES_RESULT':
+            dicesResultAction(data)
             break
         default:
             console.warn(`Unknown action: ${action}`)
@@ -159,6 +161,68 @@
             <strong style="color: ${colour}">${name}</strong>
         `
         return playerIdentifier
+    }
+
+    function updatePlayerPreview (name, colour, gender) {
+        const player = $('#player')
+        const playerName = $('#player-name-display')
+
+        if (name.length > 0) { playerName.text(name) }
+
+        player.removeClass(function (index, className) {
+            return (className.match(/\bfa-\S+/g) || []).join(' ')
+        })
+
+        player.addClass('fa-10x fa-' + gender)
+        player.css('color', colour)
+    }
+
+    function setDiceNumber (dice, number) {
+        dice.removeClass(function (index, className) {
+            return (className.match(/\bfa-dice\S+/g) || []).join(' ')
+        })
+        dice.data('dice', number)
+        dice.addClass('fa-dice-' + number)
+    }
+
+    function changeDice (dice) {
+        const currentDice = dice.data('dice')
+        switch (currentDice) {
+        case 'one':
+            dice.data('dice', 'two')
+            dice.removeClass('fa-dice-one')
+            dice.addClass('fa-dice-two')
+            break
+        case 'two':
+            dice.data('dice', 'three')
+            dice.removeClass('fa-dice-two')
+            dice.addClass('fa-dice-three')
+            break
+        case 'three':
+            dice.data('dice', 'four')
+            dice.removeClass('fa-dice-three')
+            dice.addClass('fa-dice-four')
+            break
+        case 'four':
+            dice.data('dice', 'five')
+            dice.removeClass('fa-dice-four')
+            dice.addClass('fa-dice-five')
+            break
+        case 'five':
+            dice.data('dice', 'six')
+            dice.removeClass('fa-dice-five')
+            dice.addClass('fa-dice-six')
+            break
+        case 'six':
+            dice.data('dice', 'one')
+            dice.removeClass('fa-dice-six')
+            dice.addClass('fa-dice-one')
+            break
+        default:
+            dice.data('dice', 'one')
+            dice.removeClass('fa-dice')
+            dice.addClass('fa-dice-one')
+        }
     }
 
     /********************************************
@@ -275,29 +339,6 @@
         updatePlayerPreview(data.name, data.colour, data.gender)
     }
 
-    function dicesResultAction (data) {
-        const dice1 = $('#dice-1')
-        const dice2 = $('#dice-2')
-
-        setTimeout(function () {
-            clearInterval(intervalDice1)
-            clearInterval(intervalDice2)
-
-            setDiceNumber(dice1, data.dice1)
-            setDiceNumber(dice2, data.dice2)
-
-            $('#throw-dices').prop('disabled', false)
-        }, 1000)
-    }
-
-    function setDiceNumber (dice, number) {
-        dice.removeClass(function (index, className) {
-            return (className.match(/\bfa-dice\S+/g) || []).join(' ')
-        })
-        dice.data('dice', number)
-        dice.addClass('fa-dice-' + number)
-    }
-
     function playerListAction (data) {
         const playerListElem = $('#player-list')
         const playerList = data.player_list
@@ -334,6 +375,40 @@
 
         $('#dices-throw').removeClass('hide')
         $('#player-selection').addClass('hide')
+    }
+
+    function playerTurnAction (data) {
+        dicesTurnInterval = setInterval(function () {
+            const dicesPreview = $('#dices-preview')
+            const dices = $('.dice')
+            const dicesTurn = dicesPreview.data('dices-turn')
+            if (dicesTurn) {
+                dicesPreview.removeClass('bg-light')
+                dices.css('transform', 'scale(1.1)')
+                dicesPreview.data('dices-turn', 0)
+            } else {
+                dicesPreview.addClass('bg-light')
+                dices.css('transform', 'scale(1)')
+                dicesPreview.data('dices-turn', 1)
+            }
+        }, 500)
+        $('#throw-dices').prop('disabled', false)
+    }
+
+    function dicesResultAction (data) {
+        const dice1 = $('#dice-1')
+        const dice2 = $('#dice-2')
+
+        const intervalDice1 = setInterval(changeDice.bind(null, dice1), 50)
+        const intervalDice2 = setInterval(changeDice.bind(null, dice2), 50)
+
+        setTimeout(function () {
+            clearInterval(intervalDice1)
+            clearInterval(intervalDice2)
+
+            setDiceNumber(dice1, data.dice1)
+            setDiceNumber(dice2, data.dice2)
+        }, 1000)
     }
 
     /********************************************
@@ -388,20 +463,6 @@
         socket.send(JSON.stringify(socketMessage))
     }
 
-    function updatePlayerPreview (name, colour, gender) {
-        const player = $('#player')
-        const playerName = $('#player-name-display')
-
-        if (name.length > 0) { playerName.text(name) }
-
-        player.removeClass(function (index, className) {
-            return (className.match(/\bfa-\S+/g) || []).join(' ')
-        })
-
-        player.addClass('fa-10x fa-' + gender)
-        player.css('color', colour)
-    }
-
     function updatePlayer () {
         const name = $('#player-name').val()
         const colour = $('#player-colour').val()
@@ -420,56 +481,12 @@
 
     function throwDices () {
         $(this).attr('disabled', true)
-        const dice1 = $('#dice-1')
-        const dice2 = $('#dice-2')
-
-        intervalDice1 = setInterval(changeDice.bind(null, dice1), 50)
-        intervalDice2 = setInterval(changeDice.bind(null, dice2), 50)
+        clearInterval(dicesTurnInterval)
 
         const socketMessage = {
             action: 'THROW_DICES'
         }
         socket.send(JSON.stringify(socketMessage))
-    }
-
-    function changeDice (dice) {
-        const currentDice = dice.data('dice')
-        switch (currentDice) {
-        case 'one':
-            dice.data('dice', 'two')
-            dice.removeClass('fa-dice-one')
-            dice.addClass('fa-dice-two')
-            break
-        case 'two':
-            dice.data('dice', 'three')
-            dice.removeClass('fa-dice-two')
-            dice.addClass('fa-dice-three')
-            break
-        case 'three':
-            dice.data('dice', 'four')
-            dice.removeClass('fa-dice-three')
-            dice.addClass('fa-dice-four')
-            break
-        case 'four':
-            dice.data('dice', 'five')
-            dice.removeClass('fa-dice-four')
-            dice.addClass('fa-dice-five')
-            break
-        case 'five':
-            dice.data('dice', 'six')
-            dice.removeClass('fa-dice-five')
-            dice.addClass('fa-dice-six')
-            break
-        case 'six':
-            dice.data('dice', 'one')
-            dice.removeClass('fa-dice-six')
-            dice.addClass('fa-dice-one')
-            break
-        default:
-            dice.data('dice', 'one')
-            dice.removeClass('fa-dice')
-            dice.addClass('fa-dice-one')
-        }
     }
 
     function rotateBoard () {
