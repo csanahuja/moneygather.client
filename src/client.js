@@ -39,7 +39,7 @@
         default:
             createDisconnectedModal()
         }
-        $('#modal').modal()
+        $('#modal').modal({ backdrop: 'static', keyboard: false })
     }
 
     socket.onmessage = function (event) {
