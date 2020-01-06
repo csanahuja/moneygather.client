@@ -65,6 +65,9 @@
         case 'PLAYER_TURN':
             playerTurnAction(data)
             break
+        case 'PLAYER_TURN_END':
+            playerTurnEndAction(data)
+            break
         case 'DICES_RESULT':
             dicesResultAction(data)
             break
@@ -447,6 +450,11 @@
             }
         }, 500)
         $('#throw-dices').prop('disabled', false)
+    }
+
+    function playerTurnEndAction (data) {
+        $('#throw-dices').attr('disabled', true)
+        clearInterval(dicesTurnInterval)
     }
 
     function dicesResultAction (data) {
