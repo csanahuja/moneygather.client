@@ -68,6 +68,9 @@
         case 'PLAYER_TURN_END':
             playerTurnEndAction(data)
             break
+        case 'PLAYER_MOVEMENT':
+            playerMovementAction(data)
+            break
         case 'DICES_RESULT':
             dicesResultAction(data)
             break
@@ -160,7 +163,7 @@
 
     function createPlayerIdentifierMessage (name, colour, gender) {
         const playerIdentifier = `
-            <span class="fa fa-${gender}" style="color: ${colour}"></span>
+           <span class="fa fa-${gender}" style="color: ${colour}"></span>
             <strong style="color: ${colour}">${name}</strong>
         `
         return playerIdentifier
@@ -281,6 +284,50 @@
                 bullet.removeClass('fa-circle-o')
             }
         })
+    }
+
+    function createPlayerChip (gender, colour, uid) {
+        const chip = `
+            <div class="player-chip bg-white p-2" 
+                data-uid=${uid} data-position="0">
+                <span class="fa fa-${gender}" style="color: ${colour}"></span>
+            </div>
+        `
+        return chip
+    }
+
+    function createBoardPlayers (players) {
+        const initialBoardPos = $('#box-0')
+        players.forEach(player => {
+            const icon = createPlayerChip(
+                player.gender, player.colour, player.uid)
+            initialBoardPos.append(icon)
+        })
+    }
+
+    function selectPlayerChip (uid) {
+        let player = null
+        $('.player-chip').each(function () {
+            if ($(this).data('uid') === uid) {
+                player = $(this)
+            }
+        })
+        return player
+    }
+
+    function movePlayerChip (uid, position) {
+        const player = selectPlayerChip(uid)
+        let currentPosition = player.data('position')
+
+        const moveInterval = setInterval(function () {
+            currentPosition += 1
+            $('#box-' + currentPosition).append(player)
+            if (currentPosition === position) {
+                clearInterval(moveInterval)
+            }
+        }, 500)
+
+        player.data('position', position)
     }
 
     /********************************************
@@ -432,6 +479,8 @@
 
         $('#dices-throw').removeClass('hide')
         $('#player-selection').addClass('hide')
+
+        createBoardPlayers(data.player_list)
     }
 
     function playerTurnAction (data) {
@@ -455,6 +504,12 @@
     function playerTurnEndAction (data) {
         $('#throw-dices').attr('disabled', true)
         clearInterval(dicesTurnInterval)
+    }
+
+    function playerMovementAction (data) {
+        const position = data.position
+        const uid = data.uid
+        movePlayerChip(uid, position)
     }
 
     function dicesResultAction (data) {
@@ -634,18 +689,4 @@
         const index = $(this).data('index')
         setPlayerSlide(index)
     }
-
-    /* Test */
-    $('#create-player').on('click', function () {
-        $('#box-0').html('<span id="player-user" class="bg-white fa fa-4x fa-user p-2 rounded text-danger"></span>')
-    })
-
-    $('#move-player').on('click', function () {
-        let position = 0
-        const user = $('#player-user')
-        setInterval(function () {
-            position += 1
-            $('#box-' + position).append(user)
-        }, 1000)
-    })
 })(jQuery)
