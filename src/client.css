@@ -92,8 +92,32 @@ INDEX
 
 #inner-board .box {
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+#inner-board #left-board .box,
+#inner-board #right-board .box{
+    height: 11.1%;
+}
+
+#inner-board #top-board .box,
+#inner-board #bottom-board .box {
+    flex-direction: column;
+}
+
+#inner-board .box-big {
+    flex-wrap: wrap;
+    flex-direction: row !important;
+}
+
+#inner-board .player-chip {
+    flex: 0 0 20px;
+    margin: 0.1rem;
+    text-align: center;
+    padding: 0.1rem .25rem;
+}
 
 /*****************
 4. Game Status & Controls
