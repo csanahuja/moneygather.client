@@ -403,8 +403,11 @@
         const playersNum = $('#players-num')
         const playerList = data.player_list
 
+        $('.player').remove()
+        $('.bullet').remove()
+
         playersNum.text(playerList.length + '/' + data.num_players)
-        playerSliderElem.data('items', data.num_players)
+        playerSliderElem.data('items', playerList.length)
         playerDummy.removeClass('player-dummy')
         bulletDummy.removeClass('bullet-dummy')
 
@@ -606,6 +609,7 @@
 
         if (prevIndex === -1) prevIndex = numItems - 1
 
+        console.log(numItems, activeIndex, prevIndex)
         setPlayerSlide(prevIndex)
     }
 
