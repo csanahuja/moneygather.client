@@ -225,6 +225,61 @@
         }
     }
 
+    function constructPlayerSlide (
+        player, index, playerListElem, bulletsElem, playerDummy,
+        bulletDummy) {
+        const playerElem = playerDummy.clone()
+        const bullet = bulletDummy.clone()
+        const playerIconElem = playerElem.find('.player-gender')
+
+        playerElem.removeClass('player-dummy')
+        playerElem.addClass('player')
+        playerElem.data('uid', player.uid)
+        playerElem.data('index', index)
+        playerElem.find('.player-name').text(player.name)
+
+        playerIconElem.removeClass('fa-ghost')
+        playerIconElem.addClass('fa-' + player.gender)
+        playerIconElem.css('color', player.colour)
+
+        bullet.addClass('bullet')
+        bullet.data('index', index)
+
+        if (player.uid === UID) {
+            playerElem.addClass('active-player')
+            bullet.removeClass('fa-circle-o')
+            bullet.addClass('active-bullet fa-circle')
+        }
+        playerListElem.append(playerElem)
+        bulletsElem.append(bullet)
+    }
+
+    function setPlayerSlide (index) {
+        const activePlayer = $('.active-player')
+        const activeBullet = $('.active-bullet')
+        const playerSlides = $('.player')
+        const playerBullets = $('.bullet')
+
+        activePlayer.removeClass('active-player')
+        activeBullet.removeClass('active-bullet fa-circle')
+        activeBullet.addClass('fa-circle-o')
+
+        playerSlides.each(function () {
+            const player = $(this)
+            if (player.data('index') === index) {
+                player.addClass('active-player')
+            }
+        })
+
+        playerBullets.each(function () {
+            const bullet = $(this)
+            if (bullet.data('index') === index) {
+                bullet.addClass('fa-circle active-bullet')
+                bullet.removeClass('fa-circle-o')
+            }
+        })
+    }
+
     /********************************************
      * Game Events functions
      *******************************************/
@@ -340,31 +395,27 @@
     }
 
     function playerListAction (data) {
+        const playerSliderElem = $('#player-slider')
         const playerListElem = $('#player-list')
-        const playerList = data.player_list
+        const bulletsElem = $('#player-slider-bullets')
         const playerDummy = $('.player-dummy')
+        const bulletDummy = $('.bullet-dummy')
         const playersNum = $('#players-num')
+        const playerList = data.player_list
+
         playersNum.text(playerList.length + '/' + data.num_players)
+        playerSliderElem.data('items', data.num_players)
         playerDummy.removeClass('player-dummy')
+        bulletDummy.removeClass('bullet-dummy')
 
-        let playerElem = null
-        let playerIconElem = null
-
-        playerList.forEach(player => {
-            playerElem = playerDummy.clone()
-            playerElem.removeClass('player-dummy')
-            playerElem.addClass('player')
-            playerElem.data('uid', player.uid)
-            playerElem.find('.player-name').text(player.name)
-            playerIconElem = playerElem.find('.player-gender')
-            playerIconElem.removeClass('fa-ghost')
-            playerIconElem.addClass('fa-' + player.gender)
-            playerIconElem.css('color', player.colour)
-            if (player.uid === UID) playerElem.addClass('active-player')
-            playerListElem.append(playerElem)
+        playerList.forEach((player, index) => {
+            constructPlayerSlide(
+                player, index, playerListElem, bulletsElem,
+                playerDummy, bulletDummy)
         })
 
         playerDummy.addClass('player-dummy')
+        bulletDummy.addClass('bullet-dummy')
     }
 
     function gameStartedAction (data) {
@@ -426,6 +477,7 @@
     $('#player-ready').on('click', setNotReady)
     $('#prev-player').on('click', prevPlayer)
     $('#next-player').on('click', nextPlayer)
+    $('body').on('click', '.bullet', bulletSlide)
 
     function checkServerStatus () {
         const serverStatus = $('#server-status')
@@ -548,31 +600,27 @@
 
     function prevPlayer () {
         const activePlayer = $('.active-player')
-        const lastSibling = activePlayer.siblings().last()
-        let prevSibling = null
+        const activeIndex = activePlayer.data('index')
+        const numItems = $('#player-slider').data('items')
+        let prevIndex = (activeIndex - 1) % numItems
 
-        activePlayer.removeClass('active-player')
-        if (activePlayer.index() === 1) {
-            prevSibling = lastSibling
-        } else {
-            prevSibling = activePlayer.prev()
-        }
-        prevSibling.addClass('active-player')
+        if (prevIndex === -1) prevIndex = numItems - 1
+
+        setPlayerSlide(prevIndex)
     }
 
     function nextPlayer () {
         const activePlayer = $('.active-player')
-        const lastSibling = activePlayer.siblings().last()
-        const firstSibling = activePlayer.siblings().first()
-        let nextSibling = null
+        const activeIndex = activePlayer.data('index')
+        const numItems = $('#player-slider').data('items')
+        const nextIndex = (activeIndex + 1) % numItems
 
-        activePlayer.removeClass('active-player')
-        if (activePlayer.index() > lastSibling.index()) {
-            nextSibling = firstSibling.next()
-        } else {
-            nextSibling = activePlayer.next()
-        }
-        nextSibling.addClass('active-player')
+        setPlayerSlide(nextIndex)
+    }
+
+    function bulletSlide () {
+        const index = $(this).data('index')
+        setPlayerSlide(index)
     }
 
     /* Test */

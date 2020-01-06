@@ -116,6 +116,10 @@ INDEX
     z-index: 2;
 }
 
+#player-slider .bullet-dummy{
+    display: none;
+}
+
 #player-slider #prev-player{
     left: 10%;
 }
