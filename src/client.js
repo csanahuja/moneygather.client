@@ -39,7 +39,7 @@
         default:
             createDisconnectedModal()
         }
-        $('#modal').modal({ backdrop: 'static', keyboard: false })
+        $('#modal').modal()
     }
 
     socket.onmessage = function (event) {
@@ -152,7 +152,13 @@
     }
 
     function createModal (header, body, footer) {
-        $('.modal-header').html(header)
+        const closeButton = `
+            <button type="button" class="close" data-dismiss="modal" 
+                aria-label="Close">
+                <span class="fa fa-times"></span>
+            </button>
+        `
+        $('.modal-header').html(header + closeButton)
         $('.modal-body').html(body)
         $('.modal-footer').html(footer)
     }
