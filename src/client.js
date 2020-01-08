@@ -65,8 +65,8 @@
         case 'PLAYER_TURN':
             playerTurnAction(data)
             break
-        case 'PLAYER_TURN_END':
-            playerTurnEndAction(data)
+        case 'PLAYER_END_DICES':
+            playerEndDicesAction(data)
             break
         case 'PLAYER_MOVEMENT':
             playerMovementAction(data)
@@ -507,7 +507,7 @@
         $('#throw-dices').prop('disabled', false)
     }
 
-    function playerTurnEndAction (data) {
+    function playerEndDicesAction (data) {
         $('#throw-dices').attr('disabled', true)
         clearInterval(dicesTurnInterval)
     }
