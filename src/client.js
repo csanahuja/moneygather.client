@@ -237,6 +237,32 @@
         }
     }
 
+    function constructPlayerSlider (playerList, numPlayers) {
+        const playerSliderElem = $('#player-slider')
+        const playerListElem = $('#player-slider-list')
+        const bulletsElem = $('#player-slider-bullets')
+        const playerDummy = $('.player-dummy')
+        const bulletDummy = $('.bullet-dummy')
+        const playersNum = $('#players-num')
+
+        $('.player').remove()
+        $('.bullet').remove()
+
+        playersNum.text(playerList.length + '/' + numPlayers)
+        playerSliderElem.data('items', playerList.length)
+        playerDummy.removeClass('player-dummy')
+        bulletDummy.removeClass('bullet-dummy')
+
+        playerList.forEach((player, index) => {
+            constructPlayerSlide(
+                player, index, playerListElem, bulletsElem,
+                playerDummy, bulletDummy)
+        })
+
+        playerDummy.addClass('player-dummy')
+        bulletDummy.addClass('bullet-dummy')
+    }
+
     function constructPlayerSlide (
         player, index, playerListElem, bulletsElem, playerDummy,
         bulletDummy) {
@@ -264,6 +290,40 @@
         }
         playerListElem.append(playerElem)
         bulletsElem.append(bullet)
+    }
+
+    function constructPlayerList (playerList, numPlayers) {
+        const playersReadyNum = $('#players-ready-num')
+        const playerListElem = $('#players-ready-list')
+        let playersReady = 0
+
+        playerListElem.empty()
+
+        playerList.forEach((player, index) => {
+            let statusIconClasses = 'fa fa-times p-1 rounded bg-danger'
+            if (player.ready) {
+                playersReady += 1
+                statusIconClasses = 'fa fa-check p-1 rounded bg-success'
+            }
+
+            const status = `<span 
+                    class="status-icon text-center text-white mr-2 
+                    ${statusIconClasses}">
+                </span>
+            `
+            const playerIdentifier = createPlayerIdentifierMessage(
+                player.name,
+                player.colour,
+                player.gender
+            )
+            const playerElem = `<li class="d-inline-block w-100 mb-2">
+                ${status}
+                ${playerIdentifier}
+            </li>`
+            playerListElem.append(playerElem)
+        })
+
+        playersReadyNum.text(playersReady + '/' + numPlayers)
     }
 
     function setPlayerSlide (index) {
@@ -451,30 +511,10 @@
     }
 
     function playerListAction (data) {
-        const playerSliderElem = $('#player-slider')
-        const playerListElem = $('#player-list')
-        const bulletsElem = $('#player-slider-bullets')
-        const playerDummy = $('.player-dummy')
-        const bulletDummy = $('.bullet-dummy')
-        const playersNum = $('#players-num')
         const playerList = data.player_list
-
-        $('.player').remove()
-        $('.bullet').remove()
-
-        playersNum.text(playerList.length + '/' + data.num_players)
-        playerSliderElem.data('items', playerList.length)
-        playerDummy.removeClass('player-dummy')
-        bulletDummy.removeClass('bullet-dummy')
-
-        playerList.forEach((player, index) => {
-            constructPlayerSlide(
-                player, index, playerListElem, bulletsElem,
-                playerDummy, bulletDummy)
-        })
-
-        playerDummy.addClass('player-dummy')
-        bulletDummy.addClass('bullet-dummy')
+        const numPlayers = data.num_players
+        constructPlayerSlider(playerList, numPlayers)
+        constructPlayerList(playerList, numPlayers)
     }
 
     function gameStartedAction (data) {
@@ -485,6 +525,7 @@
 
         $('#dices-throw').removeClass('hide')
         $('#player-selection').addClass('hide')
+        $('#players-ready').addClass('hide')
 
         createBoardPlayers(data.player_list)
     }

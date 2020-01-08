@@ -123,14 +123,14 @@ INDEX
 4. Game Status & Controls
 ******************/
 
-#player-list .player {
+#player-slider .player {
     position: absolute;
     top: 0;
     width: 100%;
     z-index: 0;
 }
 
-#player-list .active-player {
+#player-slider .active-player {
     z-index: 1 !important;
 }
 
@@ -150,6 +150,10 @@ INDEX
 
 #player-slider #next-player{
     right: 10%;
+}
+
+#players-ready-list .status-icon {
+    width: 25px;
 }
 
 /*****************
