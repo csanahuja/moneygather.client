@@ -7,6 +7,7 @@
      *******************************************/
 
     const socket = new WebSocket('wss://api.niticras.com/ws')
+    const boardPositions = 40
     let UID = null
     let dicesTurnInterval = null
 
@@ -387,6 +388,7 @@
 
         const moveInterval = setInterval(function () {
             currentPosition += 1
+            currentPosition = currentPosition % boardPositions
             $('#box-' + currentPosition).append(player)
             if (currentPosition === position) {
                 clearInterval(moveInterval)
