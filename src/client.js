@@ -525,7 +525,7 @@
         gameStatusTitle.addClass('text-success')
         gameStatusTitle.text('Game started')
 
-        $('#dices-throw').removeClass('hide')
+        $('#dices-roll').removeClass('hide')
         $('#player-selection').addClass('hide')
         $('#players-ready').addClass('hide')
 
@@ -547,11 +547,11 @@
                 dicesPreview.data('dices-turn', 1)
             }
         }, 500)
-        $('#throw-dices').prop('disabled', false)
+        $('#roll-dices').prop('disabled', false)
     }
 
     function playerEndDicesAction (data) {
-        $('#throw-dices').attr('disabled', true)
+        $('#roll-dices').attr('disabled', true)
         clearInterval(dicesTurnInterval)
     }
 
@@ -586,7 +586,7 @@
     $('#chat-submit').on('click', sendChatMessage)
     $('#chat-message').on('keypress', checkSendChatMessage)
     $('#update-player').on('click', updatePlayer)
-    $('#throw-dices').on('click', throwDices)
+    $('#roll-dices').on('click', rollDices)
     $('#rotate-board').on('click', rotateBoard)
     $('#player-not-ready').on('click', setReady)
     $('#player-ready').on('click', setNotReady)
@@ -646,12 +646,12 @@
         socket.send(JSON.stringify(socketMessage))
     }
 
-    function throwDices () {
+    function rollDices () {
         $(this).attr('disabled', true)
         clearInterval(dicesTurnInterval)
 
         const socketMessage = {
-            action: 'THROW_DICES'
+            action: 'ROLL_DICES'
         }
         socket.send(JSON.stringify(socketMessage))
     }
