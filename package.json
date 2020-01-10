@@ -2,7 +2,7 @@
   "name": "moneygather.client",
   "description": "Frontend package for moneygather game",
   "standardx": {
-    "globals": ["jQuery", "WebSocket", "location"]
+    "globals": ["jQuery", "WebSocket", "Audio", "location"]
   },
   "eslintConfig": {
     "rules": {

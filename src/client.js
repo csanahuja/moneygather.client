@@ -8,6 +8,10 @@
 
     const socket = new WebSocket('wss://api.niticras.com/ws')
     const boardPositions = 40
+    // Sounds
+    const audioRollDices = new Audio('sounds/roll-dices.mp3')
+    const audioStartGame = new Audio('sounds/start-game.mp3')
+
     let UID = null
     let dicesTurnInterval = null
 
@@ -530,6 +534,7 @@
         $('#players-ready').addClass('hide')
 
         createBoardPlayers(data.player_list)
+        audioStartGame.play()
     }
 
     function playerTurnAction (data) {
@@ -565,16 +570,17 @@
         const dice1 = $('#dice-1')
         const dice2 = $('#dice-2')
 
-        const intervalDice1 = setInterval(changeDice.bind(null, dice1), 50)
-        const intervalDice2 = setInterval(changeDice.bind(null, dice2), 50)
+        const intervalDice1 = setInterval(changeDice.bind(null, dice1), 100)
+        const intervalDice2 = setInterval(changeDice.bind(null, dice2), 100)
 
+        audioRollDices.play()
         setTimeout(function () {
             clearInterval(intervalDice1)
             clearInterval(intervalDice2)
 
             setDiceNumber(dice1, data.dice1)
             setDiceNumber(dice2, data.dice2)
-        }, 1000)
+        }, 700)
     }
 
     /********************************************
