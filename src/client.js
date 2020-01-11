@@ -357,10 +357,10 @@
         })
     }
 
-    function createPlayerChip (gender, colour, uid) {
+    function createPlayerChip (name, gender, colour, uid) {
         const chip = `
             <div class="player-chip bg-white rounded"
-                data-uid=${uid} data-position="0">
+                data-uid=${uid} data-position="0" title="${name}">
                 <span class="fa fa-${gender}" style="color: ${colour}"></span>
             </div>
         `
@@ -371,7 +371,9 @@
         const initialBoardPos = $('#box-0')
         players.forEach(player => {
             const icon = createPlayerChip(
-                player.gender, player.colour, player.uid)
+                player.name, player.gender,
+                player.colour, player.uid
+            )
             initialBoardPos.append(icon)
         })
     }

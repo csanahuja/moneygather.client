@@ -61,10 +61,21 @@
                                 </button>
                             </div>
 
-                            <div class="bg-white rounded flex-grow-1 mb-3 mb-5 mx-5 p-5">
-                                <p>
-                                    Reserved for Ads
-                                </p>
+                            <div id="board-info" class="bg-white rounded flex-grow-1 mb-3 mb-5 mx-5">
+                                <div id="board-info-title" class="bg-theme-2 py-2 rounded-top text-white">
+                                    <h4 class="pl-4 d-flex align-items-center"> Board info 
+                                        <span class="fa fa-stack fa-xs ml-2">
+                                            <span class="fa fa-circle fa-stack-2x"></span>
+                                            <span class="fa fa-info fa-stack-1x text-theme-2"></span>
+                                        </span>
+                                    </h4>
+                                </div>
+                                <div id="board-info-content" class="p-2">
+                                    <p> Moneygather it is a board game monopoly look-alike. </p>
+                                    <p> On <button class="btn bg-success-tl text-bold px-1 py-0"> Green section </button> you can see the <strong>game status and the controls</strong>.</p>
+                                    <p> On <button class="btn bg-wood text-bold px-1 py-0"> Wood section </button> you can see the <strong>board, players and boxes</strong>.</p>
+                                    <p> On <button class="btn bg-dark-tl text-bold text-white px-1 py-0"> Dark section </button> you can see the <strong>game events and the chat</strong>.</p>                                                                        
+                                </div>
                             </div>
                         </div>
                         <div id="right-board" class="d-flex flex-column">
@@ -96,116 +107,115 @@
             </div>
 
             <!-- STATUS AND CONTROLS -->
-            <div id="game-status-and-controls" class="col-sm-12 col-lg-6 col-xl-3 order-lg-0 bg-success-tl">
-
-                <!-- GAME STATUS -->
-                <div id="game-status" class="bg-white rounded d-flex flex-column my-3">
-                    <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-wrap justify-content-center shadow">
-                        <h4 id="game-status-title" class="text-danger text-uppercase"> Game not started </h4>
+            <div id="game-status-and-controls" class="col-sm-12 col-lg-6 col-xl-3 order-lg-0 p-3">
+                <div class="bg-success-tl p-3 rounded">
+                    <div id="game-status" class="bg-white rounded d-flex flex-column my-3">
+                        <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-wrap justify-content-center shadow">
+                            <h4 id="game-status-title" class="text-danger text-uppercase"> Game not started </h4>
+                        </div>
                     </div>
-                </div>
 
-                <div id="players" class="bg-white rounded d-flex flex-column mb-3">
+                    <div id="players" class="bg-white rounded d-flex flex-column mb-3">
 
-                    <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column flex-wrap justify-content-center shadow">
-                        <h4 class="text-primary"> Players connected (<span id="players-num">0</span>)</h4>
-                        <div id="player-slider" class="position-relative bg-light border">
-                            <ul id="player-slider-list" class="list-unstyled mb-0">
-                                <li class="player-dummy">
-                                    <div class="bg-light flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center">
-                                        <div class="player-name mb-3">Player list</div>
-                                        <div class="player-gender fa fa-5x fa-ghost"></div>
-                                    </div>  
-                                </li>
-                            </ul>
-                            <div id="player-slider-controls">
-                                <button id="prev-player" class="position-absolute btn btn-primary mt-2">
-                                    <span class="fa fa-arrow-alt-circle-left"></span>
+                        <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column flex-wrap justify-content-center shadow">
+                            <h4 class="text-primary"> Players connected (<span id="players-num">0</span>)</h4>
+                            <div id="player-slider" class="position-relative bg-light border">
+                                <ul id="player-slider-list" class="list-unstyled mb-0">
+                                    <li class="player-dummy">
+                                        <div class="bg-light flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center">
+                                            <div class="player-name mb-3">Player list</div>
+                                            <div class="player-gender fa fa-5x fa-ghost"></div>
+                                        </div>  
+                                    </li>
+                                </ul>
+                                <div id="player-slider-controls">
+                                    <button id="prev-player" class="position-absolute btn btn-primary mt-2">
+                                        <span class="fa fa-arrow-alt-circle-left"></span>
+                                    </button>
+                                    <button id="next-player" class="position-absolute btn btn-primary mt-2">
+                                        <span class="fa fa-arrow-alt-circle-right"></span>
+                                    </button>                                
+                                </div>
+                                <div id="player-slider-bullets">
+                                    <span class="bullet-dummy fa fa-circle-o text-primary mx-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="players-ready" class="bg-white rounded d-flex flex-column mb-3">
+                        <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column flex-wrap justify-content-center shadow">
+                            <h4 class="text-primary"> Players ready (<span id="players-ready-num">0</span>)</h4>
+                            <ul id="players-ready-list" class="mx-auto my-3 p-0 text-left"></ul>
+                        </div>
+                    </div>
+
+                    <div id="player-selection" class="bg-white rounded d-flex flex-wrap mb-3">
+                        <div id="player-fields" class="d-flex flex-column p-3">
+                            <div class="field">
+                                <label> Name </label>
+                                <input id="player-name" type="text" placeholder="Player">
+                            </div>
+                            <div class="field">
+                                <label> Colour </label>
+                                <input id="player-colour" value="#007bff" type="color">
+                            </div>
+                            <div class="field">
+                                <label> Gender </label>
+                                <select id="player-gender">
+                                    <option value="ghost">Unknown</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="controls flex-grow-1 d-flex flex-column">
+                                <button id="update-player" class="btn btn-primary mt-2">
+                                    Update Player <span class="fa fa-refresh ml-2"></span>
                                 </button>
-                                <button id="next-player" class="position-absolute btn btn-primary mt-2">
-                                    <span class="fa fa-arrow-alt-circle-right"></span>
-                                </button>                                
+                                <button id="player-not-ready" class="btn btn-danger mt-2">
+                                    Not ready <span class="fa fa-times ml-2"></span>
+                                </button>                             
+                                <button id="player-ready" class="btn btn-success hide mt-2">
+                                    Ready <span class="fa fa-check ml-2"></span>
+                                </button>                            
                             </div>
-                            <div id="player-slider-bullets">
-                                <span class="bullet-dummy fa fa-circle-o text-primary mx-1"></span>
-                            </div>
+                        </div>
+                        <div id="player-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center shadow">
+                            <div id="player-name-display" class="mb-3">Player</div>
+                            <div id="player" class="fa fa-10x fa-ghost rotate-y"></div>
                         </div>
                     </div>
-                </div>
 
-                <div id="players-ready" class="bg-white rounded d-flex flex-column mb-3">
-                    <div class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column flex-wrap justify-content-center shadow">
-                        <h4 class="text-primary"> Players ready (<span id="players-ready-num">0</span>)</h4>
-                        <ul id="players-ready-list" class="mx-auto my-3 p-0 text-left"></ul>
-                    </div>
-                </div>
-
-                <!-- PLAYER -->
-                <div id="player-selection" class="bg-white rounded d-flex flex-wrap mb-3">
-                    <div id="player-fields" class="d-flex flex-column p-3">
-                        <div class="field">
-                            <label> Name </label>
-                            <input id="player-name" type="text" placeholder="Player">
+                    <div id="dices-roll" class="bg-white rounded d-flex flex-column mb-3 hide">
+                        <div id="dices-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-wrap justify-content-center shadow">
+                            <div id="dice-1" class="dice flex-grow-1 text-primary fa fa-8x fa-dice"></div>
+                            <div id="dice-2" class="dice flex-grow-1 text-primary fa fa-8x fa-dice rotate-180"></div>
                         </div>
-                        <div class="field">
-                            <label> Colour </label>
-                            <input id="player-colour" value="#007bff" type="color">
-                        </div>
-                        <div class="field">
-                            <label> Gender </label>
-                            <select id="player-gender">
-                                <option value="ghost">Unknown</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div class="controls flex-grow-1 d-flex flex-column">
-                            <button id="update-player" class="btn btn-primary mt-2">
-                                Update Player <span class="fa fa-refresh ml-2"></span>
-                            </button>
-                            <button id="player-not-ready" class="btn btn-danger mt-2">
-                                Not ready <span class="fa fa-times ml-2"></span>
-                            </button>                             
-                            <button id="player-ready" class="btn btn-success hide mt-2">
-                                Ready <span class="fa fa-check ml-2"></span>
-                            </button>                            
-                        </div>
+                        <button id="roll-dices" disabled class="btn btn-primary m-2">
+                            Roll Dices <span class="fa fa-dice ml-2"></span>
+                        </button>
                     </div>
-                    <div id="player-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-column justify-content-center align-items-center shadow">
-                        <div id="player-name-display" class="mb-3">Player</div>
-                        <div id="player" class="fa fa-10x fa-ghost rotate-y"></div>
-                    </div>
-                </div>
-
-                <!-- DICE -->
-                <div id="dices-roll" class="bg-white rounded d-flex flex-column mb-3 hide">
-                    <div id="dices-preview" class="bg-light border flex-fill m-2 p-2 rounded text-center d-flex flex-wrap justify-content-center shadow">
-                        <div id="dice-1" class="dice flex-grow-1 text-primary fa fa-8x fa-dice"></div>
-                        <div id="dice-2" class="dice flex-grow-1 text-primary fa fa-8x fa-dice rotate-180"></div>
-                    </div>
-                    <button id="roll-dices" disabled class="btn btn-primary m-2">
-                        Roll Dices <span class="fa fa-dice ml-2"></span>
-                    </button>
                 </div>
             </div>
 
             <!-- GAME EVENTS & CHAT -->
-            <div id="game-events-and-chat" class="col-sm-12 col-lg-6 col-xl-3 order-lg-2 bg-dark-tl p-3 d-flex flex-column">
+            <div id="game-events-and-chat" class="col-sm-12 col-lg-6 col-xl-3 order-lg-2 d-flex flex-column p-3">
+                <div class="bg-dark-tl rounded p-3">
+                    <div id="game-events" class="bg-primary text-center py-2 rounded-top text-white">
+                        <h3> Game events <span class="fa fa-gamepad"></span></h3>
+                    </div>
+                    <div id="game-events-window" class="bg-white rounded-bottom flex-grow-1 mb-3 p-2"></div>
 
-                <div id="game-events" class="bg-primary text-center py-2 rounded-top text-white">
-                    <h3> Game events <span class="fa fa-gamepad"></span></h3>
-                </div>
-                <div id="game-events-window" class="bg-white rounded-bottom flex-grow-1 mb-3 p-2"></div>
-
-                <div id="chat-header" class="bg-primary text-center py-2 rounded-top text-white">
-                    <h3> Chat with others! <span class="fa fa-comments"></span></h3>
-                </div>
-                <div id="chat-window" class="bg-white rounded-bottom flex-grow-1 mb-3 p-2"></div>
-                <div id="chat-input">
-                    <div class="input-group">
-                        <textarea autocomplete="no" id="chat-message" type="text" class="form-control" placeholder="Message..."></textarea>
-                        <div class="input-group-append">
-                            <input id="chat-submit" type="submit" class="btn btn-primary" value="Send">
+                    <div id="chat-header" class="bg-primary text-center py-2 rounded-top text-white">
+                        <h3> Chat with others! <span class="fa fa-comments"></span></h3>
+                    </div>
+                    <div id="chat-window" class="bg-white rounded-bottom flex-grow-1 mb-3 p-2"></div>
+                    <div id="chat-input">
+                        <div class="input-group">
+                            <textarea autocomplete="no" id="chat-message" type="text" class="form-control" placeholder="Message..."></textarea>
+                            <div class="input-group-append">
+                                <input id="chat-submit" type="submit" class="btn btn-primary" value="Send">
+                            </div>
                         </div>
                     </div>
                 </div>

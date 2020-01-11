@@ -18,16 +18,26 @@ INDEX
     font-weight: 600;
 }
 
-.hide{ 
+.text-theme {
+    color: #03A9F4 !important;
+}
+
+.text-theme-2 {
+    color: #009688 !important;
+}
+
+.hide { 
     display: none !important;
 }
 
 .rotate-90 {
     transform: rotate(90deg);
 }
+
 .rotate-180{
     transform: rotate(180deg);
 }
+
 .rotate-270 {
     transform: rotate(270deg);
 }
