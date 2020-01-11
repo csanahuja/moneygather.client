@@ -22,23 +22,6 @@ INDEX
     display: none !important;
 }
 
-.h-74 {
-    height: 74%;
-}
-.h-13 {
-    height: 13%;
-}
-
-.w-74 {
-    width: 74%;
-}
-.w-13 {
-    width: 13%;
-}
-.w-8-3 {
-    width: 8.3%;
-}
-
 .rotate-90 {
     transform: rotate(90deg);
 }
@@ -61,6 +44,19 @@ INDEX
     background-color: #009688 !important;
 }
 
+.bg-dark-tl {
+    background-color: #343a40a0 !important;
+}
+
+.bg-success-tl {
+    background-color: #28a745a0 !important;
+}
+
+.bg-wood {
+    background-image: url('/images/background-wood.jpg');
+    background-size: cover;
+}
+
 /*****************
  2. Main 
 ******************/
@@ -75,19 +71,14 @@ INDEX
 
 #inner-center-board{
     z-index: 1;
+    flex: 1 0 auto;
+    border: 0.05rem solid #000000;
 }
+
 #inner-board{
-    height: 840px;
-}
-#inner-board::after {
-    content: '';
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    background-size: contain;
-    background-image: url('/images/monopoly_map_transparent_center.png')
+    height: 54rem;
+    width: 54rem;
+    border: 0.05rem solid #000000;
 }
 
 #inner-board .box {
@@ -95,19 +86,27 @@ INDEX
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ffffffa0;
+    height: 4.4rem;
+    width: 4.4rem;
+    border: 0.05rem solid #000000;
+    flex: 0 0 auto;
 }
 
 #inner-board #left-board .box,
 #inner-board #right-board .box{
-    height: 11.1%;
+    width: 7.1rem !important;
 }
 
 #inner-board #top-board .box,
 #inner-board #bottom-board .box {
+    height: 7.1rem !important;
     flex-direction: column;
 }
 
 #inner-board .box-big {
+    height: 7.1rem !important;
+    width: 7.1rem !important;
     flex-wrap: wrap;
     flex-direction: row !important;
 }
