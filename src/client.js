@@ -267,15 +267,23 @@
                 <div class="player-data">
                     <div class="position">
                         <strong> Position </strong>:
-                        <span class="player-position">0</span>
+                        <span class="player-position">${player.position}</span>
                     <div class="money">
                         <strong> Money </strong>: 
-                        <span class="player-money">0</span> €
+                        <span class="player-money">${player.money}</span> €
                     </div>
                 </div>
             </div>
         `
         return playerInfoElem
+    }
+
+    function updatePlayerInfoPos (uid, position) {
+        $('.player-info').each(function () {
+            if ($(this).data('uid') === uid) {
+                $(this).find('.player-position').text(position)
+            }
+        })
     }
 
     function constructPlayerSlider (playerList, numPlayers) {
@@ -432,6 +440,7 @@
             currentPosition += 1
             currentPosition = currentPosition % boardPositions
             $('#box-' + currentPosition).append(player)
+            updatePlayerInfoPos(uid, currentPosition)
             if (currentPosition === position) {
                 clearInterval(moveInterval)
             }
