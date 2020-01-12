@@ -165,6 +165,12 @@ INDEX
     width: 25px;
 }
 
+#players-info-list .player-icon,
+#players-info-list .player-data {
+   width: 50%;
+   flex: 0 0 auto;
+}
+
 /*****************
 5. Game Events & Chats
 ******************/

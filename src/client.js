@@ -174,7 +174,7 @@
 
     function createPlayerIdentifierMessage (name, colour, gender) {
         const playerIdentifier = `
-           <span class="fa fa-${gender}" style="color: ${colour}"></span>
+            <span class="fa fa-${gender}" style="color: ${colour}"></span>
             <strong style="color: ${colour}">${name}</strong>
         `
         return playerIdentifier
@@ -240,6 +240,42 @@
             dice.removeClass('fa-dice')
             dice.addClass('fa-dice-one')
         }
+    }
+
+    function createPlayersInfo (players) {
+        const playersInfoListElem = $('#players-info-list')
+
+        players.forEach(player => {
+            const playerInfoElem = createPlayerInfo(player)
+            playersInfoListElem.append(playerInfoElem)
+        })
+    }
+
+    function createPlayerInfo (player) {
+        const playerInfoClasses =
+            'mb-4 d-flex justify-content-around align-items-center'
+
+        const playerInfoElem = `
+            <div class="player-info ${playerInfoClasses}"
+                data-uid=${player.uid}>
+                <div class="player-icon" style="color: ${player.colour}">
+                    <div class="d-flex align-items-center">
+                        <span class="fa fa-4x fa-${player.gender} mr-2"></span>
+                        <strong>${player.name}</strong>
+                    </div>
+                </div>
+                <div class="player-data">
+                    <div class="position">
+                        <strong> Position </strong>:
+                        <span class="player-position">0</span>
+                    <div class="money">
+                        <strong> Money </strong>: 
+                        <span class="player-money">0</span> €
+                    </div>
+                </div>
+            </div>
+        `
+        return playerInfoElem
     }
 
     function constructPlayerSlider (playerList, numPlayers) {
@@ -515,8 +551,6 @@
 
     function playerInfoAction (data) {
         UID = data.uid
-        $('#player-colour').val(data.colour)
-        $('#player-gender').val(data.gender)
         updatePlayerPreview(data.name, data.colour, data.gender)
     }
 
@@ -533,10 +567,13 @@
         gameStatusTitle.addClass('text-success')
         gameStatusTitle.text('Game started')
 
-        $('#dices-roll').removeClass('hide')
-        $('#player-selection').addClass('hide')
+        $('#players-connected').addClass('hide')
         $('#players-ready').addClass('hide')
+        $('#player-selection').addClass('hide')
+        $('#players-info').removeClass('hide')
+        $('#dices-roll').removeClass('hide')
 
+        createPlayersInfo(data.player_list)
         createBoardPlayers(data.player_list)
         audioStartGame.play()
     }
