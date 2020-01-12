@@ -76,6 +76,12 @@
         case 'PLAYER_MOVEMENT':
             playerMovementAction(data)
             break
+        case 'PLAYER_BANKRUPT':
+            playerBankruptAction(data)
+            break
+        case 'PLAYER_WINNER':
+            playerWinnerAction(data)
+            break
         case 'DICES_RESULT':
             dicesResultAction(data)
             break
@@ -260,7 +266,9 @@
                 data-uid=${player.uid}>
                 <div class="player-icon" style="color: ${player.colour}">
                     <div class="d-flex align-items-center">
-                        <span class="fa fa-4x fa-${player.gender} mr-2"></span>
+                        <span class="fa fa-4x fa-stack mr-2">
+                            <span class="fa fa-${player.gender}"></span>
+                        </span>
                         <strong>${player.name}</strong>
                     </div>
                 </div>
@@ -614,6 +622,28 @@
         const position = data.position
         const uid = data.uid
         movePlayerChip(uid, position)
+    }
+
+    function playerBankruptAction (data) {
+        const spanBankrupted = `
+            <span class="fa fa-times fa-stack-1x text-danger"></span>
+        `
+        $('.player-info').each(function () {
+            if ($(this).data('uid') === data.uid) {
+                $(this).find('.fa-stack').append(spanBankrupted)
+            }
+        })
+    }
+
+    function playerWinnerAction (data) {
+        const spanWinner = `
+            <span class="fa fa-check fa-stack-1x text-success"></span>
+        `
+        $('.player-info').each(function () {
+            if ($(this).data('uid') === data.uid) {
+                $(this).find('.fa-stack').append(spanWinner)
+            }
+        })
     }
 
     function dicesResultAction (data) {

@@ -178,7 +178,7 @@ INDEX
 #game-events-window,
 #chat-window {
     max-height: 35vh;
-    min-height: 20rem;
+    min-height: 18rem;
     overflow-y: auto;
 }
 
