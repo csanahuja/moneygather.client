@@ -571,6 +571,8 @@
 
     function playerInfoAction (data) {
         UID = data.uid
+        $('#player-colour').val(data.colour)
+        $('#player-gender').val(data.gender)
         updatePlayerPreview(data.name, data.colour, data.gender)
     }
 
