@@ -76,6 +76,9 @@
         case 'PLAYER_MOVEMENT':
             playerMovementAction(data)
             break
+        case 'PLAYER_MONEY':
+            playerMoneyAction(data)
+            break
         case 'PLAYER_BANKRUPT':
             playerBankruptAction(data)
             break
@@ -259,14 +262,14 @@
 
     function createPlayerInfo (player) {
         const playerInfoClasses =
-            'mb-4 d-flex justify-content-around align-items-center'
+            'mb-2 d-flex justify-content-around align-items-center'
 
         const playerInfoElem = `
             <div class="player-info ${playerInfoClasses}"
                 data-uid=${player.uid}>
                 <div class="player-icon" style="color: ${player.colour}">
                     <div class="d-flex align-items-center">
-                        <span class="fa fa-4x fa-stack mr-2">
+                        <span class="fa fa-3x fa-stack mr-2">
                             <span class="fa fa-${player.gender}"></span>
                         </span>
                         <strong>${player.name}</strong>
@@ -622,6 +625,14 @@
         const position = data.position
         const uid = data.uid
         movePlayerChip(uid, position)
+    }
+
+    function playerMoneyAction (data) {
+        $('.player-info').each(function () {
+            if ($(this).data('uid') === data.uid) {
+                $(this).find('.player-money').text(data.money)
+            }
+        })
     }
 
     function playerBankruptAction (data) {
