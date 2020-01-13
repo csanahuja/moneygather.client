@@ -414,9 +414,9 @@
 
     function createPlayerChip (name, gender, colour, uid) {
         const chip = `
-            <div class="player-chip bg-white rounded"
+            <div class="player-chip"
                 data-uid=${uid} data-position="0" title="${name}">
-                <span class="fa fa-${gender}" style="color: ${colour}"></span>
+                <span class="fa fa-${gender} fa-3x" style="color: ${colour}"></span>
             </div>
         `
         return chip
