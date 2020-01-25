@@ -525,6 +525,16 @@
         gameEventsWindow.scrollTop(gameEventsWindow.prop('scrollHeight'))
     }
 
+    function playerMoneyMessage (data, money) {
+        const playerIdentifier = createPlayerIdentifierMessage(
+            data.name,
+            data.colour,
+            data.gender
+        )
+        const message = `<p>${playerIdentifier} earned ${money} €</p>`
+        addGameEventMessage(message)
+    }
+
     /********************************************
      * Socket message handlers
      *******************************************/
@@ -635,6 +645,8 @@
                 $(this).find('.player-money').text(data.money)
             }
         })
+
+        playerMoneyMessage(data.player, data.variation)
     }
 
     function playerBankruptAction (data) {
